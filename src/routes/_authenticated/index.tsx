@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/AppShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "Dasbor KEMI — Kemika Enterprise Mind Intelligence" },
@@ -19,9 +19,7 @@ export const Route = createFileRoute("/")({
         content: "Command center KEMI untuk agen, tugas, dan dokumen PT Kemika Karya Pratama.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
   }),
   component: DashboardPage,
 });

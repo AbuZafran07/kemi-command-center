@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/AppShell";
 import { Card, CardContent } from "@/components/ui/card";
 
-export const Route = createFileRoute("/agents")({
+export const Route = createFileRoute("/_authenticated/agents")({
   head: () => ({
     meta: [
       { title: "Pusat Agen — KEMI" },
@@ -12,9 +12,7 @@ export const Route = createFileRoute("/agents")({
       { property: "og:title", content: "Pusat Agen — KEMI" },
       { property: "og:description", content: "Kelola dan jalankan agen cerdas KEMI." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/agents" },
     ],
-    links: [{ rel: "canonical", href: "/agents" }],
   }),
   component: AgentsPage,
 });

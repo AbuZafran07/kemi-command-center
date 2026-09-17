@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/AppShell";
 import { Card, CardContent } from "@/components/ui/card";
 
-export const Route = createFileRoute("/chat")({
+export const Route = createFileRoute("/_authenticated/chat")({
   head: () => ({
     meta: [
       { title: "Obrolan — KEMI" },
@@ -12,9 +12,7 @@ export const Route = createFileRoute("/chat")({
       { property: "og:title", content: "Obrolan — KEMI" },
       { property: "og:description", content: "Berdialog dengan asisten KEMI." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/chat" },
     ],
-    links: [{ rel: "canonical", href: "/chat" }],
   }),
   component: ChatPage,
 });
