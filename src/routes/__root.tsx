@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { AppProviders } from "@/components/providers/AppProviders";
+import { Toaster } from "@/components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -126,6 +127,7 @@ function RootComponent() {
       <AppProviders>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
+        <Toaster />
       </AppProviders>
     </QueryClientProvider>
   );

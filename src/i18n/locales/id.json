@@ -12,7 +12,8 @@
     "settings": "Pengaturan",
     "sectionMain": "Navigasi",
     "openMenu": "Buka menu",
-    "closeMenu": "Tutup menu"
+    "closeMenu": "Tutup menu",
+    "sectionAgents": "Agen Anda"
   },
   "header": {
     "language": "Bahasa",
@@ -60,13 +61,43 @@
   },
   "agents": {
     "title": "Pusat Agen",
-    "subtitle": "Kelola dan jalankan agen KEMI.",
-    "placeholder": "Daftar agen akan tersedia pada fase berikutnya."
+    "subtitle": "Tim digital Anda. Hanya agen yang berwenang untuk peran Anda yang tampil.",
+    "placeholder": "Daftar agen akan tersedia pada fase berikutnya.",
+    "empty": "Belum ada agen yang diizinkan untuk peran dan divisi Anda.",
+    "chat": "Mulai obrolan",
+    "profile": "Profil agen",
+    "division": "Divisi",
+    "scope": "Lingkup kerja",
+    "knowledge": "Sumber pengetahuan",
+    "knowledgeDemo": "Data contoh internal KEMI (belum tersambung ke sistem asli).",
+    "knowledgeNone": "Belum ada sumber data yang tersambung untuk agen ini."
   },
   "chat": {
     "title": "Obrolan",
     "subtitle": "Berdialog dengan KEMI.",
-    "placeholder": "Antarmuka obrolan akan tersedia pada fase berikutnya."
+    "placeholder": "Antarmuka obrolan akan tersedia pada fase berikutnya.",
+    "pickAgent": "Pilih agen untuk memulai percakapan.",
+    "emptyThread": "Mulai percakapan dengan {{agent}}.",
+    "inputPlaceholder": "Tulis pertanyaan Anda...",
+    "send": "Kirim",
+    "thinking": "{{agent}} sedang menyusun jawaban...",
+    "sourcesTitle": "Sumber",
+    "sourcesEmpty": "Sumber akan tampil setelah agen menjawab.",
+    "dataAsOf": "Data per",
+    "demoData": "Data contoh",
+    "factVsAnalysis": "Fakta vs Analisis",
+    "factVsAnalysisDesc": "Agen menandai mana yang fakta dari data dan mana yang analisis/interpretasi. Bila data tidak tersedia, agen akan mengatakannya, bukan mengarang.",
+    "deniedTitle": "Akses ditolak",
+    "deniedBody": "Anda belum berwenang memakai {{agent}}.",
+    "deniedUnknown": "Agen tidak ditemukan atau belum aktif.",
+    "notEnabled": "{{agent}} belum diaktifkan untuk obrolan pada fase ini.",
+    "requestAccess": "Ajukan Akses",
+    "requestSoon": "Pengajuan akses akan aktif pada fase berikutnya.",
+    "backToAgents": "Kembali ke Pusat Agen",
+    "errorForbidden": "Akses ke agen ini ditolak.",
+    "errorRate": "Terlalu banyak permintaan. Coba lagi sebentar lagi.",
+    "errorUnavailable": "Layanan AI sedang tidak tersedia. Hubungi admin.",
+    "errorGeneric": "Gagal mengirim pesan. Coba lagi."
   },
   "settings": {
     "title": "Pengaturan",
@@ -78,6 +109,7 @@
     "note": "Preferensi tersimpan di profil pengguna Anda dan ikut saat login di perangkat lain."
   },
   "common": {
-    "soon": "Segera hadir"
+    "soon": "Segera hadir",
+    "loading": "Memuat..."
   }
 }
