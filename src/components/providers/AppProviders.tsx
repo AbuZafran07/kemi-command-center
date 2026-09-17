@@ -147,12 +147,19 @@ export function AppProviders({ children }: { children: ReactNode }) {
     };
   }, [loadProfile, router]);
 
-  const persistPreference = useCallback((patch: Partial<Pick<Profile, "theme_pref" | "language_pref">>) => {
-    const id = userIdRef.current;
-    if (!id) return;
-    void supabase.from("profiles").update(patch).eq("id", id);
-    setProfile((prev) => (prev ? { ...prev, ...patch } : prev));
-  }, []);
+  const persistPreference = useCallback(
+    (patch: Partial<Pick<Profile, "theme_pref" | "language_pref">>) => {
+      void (async () => {
+        const id =
+          userIdRef.current ?? (await supabase.auth.getSession()).data.session?.user.id ?? null;
+        if (!id) return;
+        userIdRef.current = id;
+        await supabase.from("profiles").update(patch).eq("id", id);
+      })();
+      setProfile((prev) => (prev ? { ...prev, ...patch } : prev));
+    },
+    [],
+  );
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
