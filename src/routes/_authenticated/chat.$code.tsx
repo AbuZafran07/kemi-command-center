@@ -9,6 +9,7 @@ import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 
 import { AgentAvatar } from "@/components/agents/AgentAvatar";
+import { RequestAccessDialog } from "@/components/agents/RequestAccessDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -104,9 +105,13 @@ function AgentChatPage() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button variant="brand" onClick={() => toast.info(t("chat.requestSoon"))}>
-              {t("chat.requestAccess")}
-            </Button>
+            {agent && !allowed ? (
+              <RequestAccessDialog
+                agentCode={agent.code}
+                agentName={agent.name}
+                trigger={<Button variant="brand">{t("chat.requestAccess")}</Button>}
+              />
+            ) : null}
             <Button variant="outline" asChild>
               <Link to="/agents">{t("chat.backToAgents")}</Link>
             </Button>
