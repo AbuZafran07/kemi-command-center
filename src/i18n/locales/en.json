@@ -12,7 +12,8 @@
     "settings": "Settings",
     "sectionMain": "Navigation",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "sectionAgents": "Your agents"
   },
   "header": {
     "language": "Language",
@@ -60,13 +61,43 @@
   },
   "agents": {
     "title": "Agent Center",
-    "subtitle": "Manage and run KEMI agents.",
-    "placeholder": "The agent list will be available in the next phase."
+    "subtitle": "Your digital team. Only agents authorised for your role are shown.",
+    "placeholder": "The agent list will be available in the next phase.",
+    "empty": "No agent is permitted for your role and division yet.",
+    "chat": "Start chat",
+    "profile": "Agent profile",
+    "division": "Division",
+    "scope": "Scope",
+    "knowledge": "Knowledge sources",
+    "knowledgeDemo": "KEMI internal sample data (not yet connected to the live system).",
+    "knowledgeNone": "No data source is connected for this agent yet."
   },
   "chat": {
     "title": "Chat",
     "subtitle": "Converse with KEMI.",
-    "placeholder": "The chat interface will be available in the next phase."
+    "placeholder": "The chat interface will be available in the next phase.",
+    "pickAgent": "Pick an agent to start a conversation.",
+    "emptyThread": "Start a conversation with {{agent}}.",
+    "inputPlaceholder": "Type your question...",
+    "send": "Send",
+    "thinking": "{{agent}} is preparing an answer...",
+    "sourcesTitle": "Sources",
+    "sourcesEmpty": "Sources appear after the agent answers.",
+    "dataAsOf": "Data as of",
+    "demoData": "Sample data",
+    "factVsAnalysis": "Fact vs Analysis",
+    "factVsAnalysisDesc": "The agent marks what is fact from the data and what is analysis. If data is missing it says so instead of inventing it.",
+    "deniedTitle": "Access denied",
+    "deniedBody": "You are not authorised to use {{agent}}.",
+    "deniedUnknown": "Agent not found or not active.",
+    "notEnabled": "{{agent}} is not enabled for chat in this phase.",
+    "requestAccess": "Request access",
+    "requestSoon": "Access requests go live in the next phase.",
+    "backToAgents": "Back to Agent Center",
+    "errorForbidden": "Access to this agent was denied.",
+    "errorRate": "Too many requests. Please try again shortly.",
+    "errorUnavailable": "The AI service is unavailable. Contact your admin.",
+    "errorGeneric": "Could not send the message. Please try again."
   },
   "settings": {
     "title": "Settings",
@@ -78,6 +109,7 @@
     "note": "Preferences are stored in your user profile and follow you to other devices."
   },
   "common": {
-    "soon": "Coming soon"
+    "soon": "Coming soon",
+    "loading": "Loading..."
   }
 }
