@@ -17,7 +17,9 @@ export type Database = {
       access_requests: {
         Row: {
           agent_code: string
+          approver_role: Database["public"]["Enums"]["app_role"]
           created_at: string
+          decided_at: string | null
           id: string
           purpose: string
           status: string
@@ -26,7 +28,9 @@ export type Database = {
         }
         Insert: {
           agent_code: string
+          approver_role?: Database["public"]["Enums"]["app_role"]
           created_at?: string
+          decided_at?: string | null
           id?: string
           purpose?: string
           status?: string
@@ -35,7 +39,9 @@ export type Database = {
         }
         Update: {
           agent_code?: string
+          approver_role?: Database["public"]["Enums"]["app_role"]
           created_at?: string
+          decided_at?: string | null
           id?: string
           purpose?: string
           status?: string
@@ -83,6 +89,51 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "agent_permissions_agent_code_fkey"
+            columns: ["agent_code"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      agent_user_grants: {
+        Row: {
+          access_request_id: string | null
+          agent_code: string
+          created_at: string
+          granted_by: string | null
+          id: string
+          revoked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          access_request_id?: string | null
+          agent_code: string
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          revoked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          access_request_id?: string | null
+          agent_code?: string
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          revoked_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_user_grants_access_request_id_fkey"
+            columns: ["access_request_id"]
+            isOneToOne: false
+            referencedRelation: "access_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agent_user_grants_agent_code_fkey"
             columns: ["agent_code"]
             isOneToOne: false
             referencedRelation: "agents"
