@@ -13,7 +13,10 @@
     "sectionMain": "Navigasi",
     "openMenu": "Buka menu",
     "closeMenu": "Tutup menu",
-    "sectionAgents": "Agen Anda"
+    "sectionAgents": "Agen Anda",
+    "requests": "Permohonan Akses",
+    "approvals": "Kotak Persetujuan",
+    "audit": "Catatan Audit"
   },
   "header": {
     "language": "Bahasa",
@@ -111,5 +114,58 @@
   "common": {
     "soon": "Segera hadir",
     "loading": "Memuat..."
+  },
+  "access": {
+    "title": "Permohonan Akses",
+    "subtitle": "Ajukan akses ke agen yang belum berwenang untuk Anda, lalu pantau statusnya.",
+    "newTitle": "Ajukan akses baru",
+    "pickAgent": "Pilih agen",
+    "requestAccess": "Ajukan Akses",
+    "myTitle": "Permohonan saya",
+    "myEmpty": "Belum ada permohonan.",
+    "dialogTitle": "Ajukan akses ke {{agent}}",
+    "dialogDesc": "Jelaskan keperluan Anda. Permohonan diteruskan ke atasan yang berwenang.",
+    "purposePlaceholder": "Contoh: perlu memantau absensi tim saya setiap pekan.",
+    "submit": "Kirim permohonan",
+    "submitting": "Mengirim...",
+    "submitted": "Permohonan terkirim.",
+    "approverRole": "Penyetuju: {{role}}",
+    "errorPending": "Masih ada permohonan yang menunggu keputusan untuk agen ini.",
+    "errorAlready": "Anda sudah berwenang memakai agen ini.",
+    "errorGeneric": "Permohonan gagal dikirim.",
+    "status": {
+      "pending": "Menunggu",
+      "approved": "Disetujui",
+      "rejected": "Ditolak"
+    }
+  },
+  "approvals": {
+    "title": "Kotak Persetujuan",
+    "subtitle": "Permohonan yang menunggu keputusan Anda. Anda tidak dapat menyetujui permohonan sendiri.",
+    "empty": "Tidak ada permohonan yang menunggu.",
+    "purpose": "Keperluan",
+    "notePlaceholder": "Catatan keputusan (opsional)",
+    "approve": "Setujui",
+    "reject": "Tolak",
+    "approved": "Permohonan disetujui.",
+    "rejected": "Permohonan ditolak.",
+    "notAllowed": "Permohonan tidak dapat Anda putuskan.",
+    "failed": "Keputusan gagal disimpan."
+  },
+  "audit": {
+    "title": "Catatan Audit",
+    "subtitle": "Jejak akses data dan aksi penting. Hanya bisa dibaca.",
+    "filters": "Filter",
+    "filterUser": "Pengguna",
+    "filterAgent": "Agen",
+    "filterFrom": "Dari tanggal",
+    "filterTo": "Sampai tanggal",
+    "allAgents": "Semua agen",
+    "empty": "Tidak ada catatan pada filter ini.",
+    "colTime": "Waktu",
+    "colUser": "Pengguna",
+    "colAgent": "Agen",
+    "colAction": "Aksi",
+    "colScope": "Lingkup data"
   }
 }
