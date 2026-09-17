@@ -13,38 +13,7 @@ const newUserSchema = z.object({
   role: roleSchema,
 });
 
-/**
- * One-time bootstrap: creates the very first CEO account.
- * Refuses once any account exists, so it cannot be reused.
- */
-export const bootstrapFirstCeo = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) =>
-    newUserSchema.omit({ role: true }).parse(input),
-  )
-  .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-    const { count, error: countError } = await supabaseAdmin
-      .from("profiles")
-      .select("id", { count: "exact", head: true });
-    if (countError) throw new Error(countError.message);
-    if ((count ?? 0) > 0) throw new Error("Bootstrap already completed");
-
-    const { error } = await supabaseAdmin.auth.admin.createUser({
-      email: data.email,
-      password: data.password,
-      email_confirm: true,
-      user_metadata: {
-        full_name: data.fullName,
-        division: data.division,
-        role: "CEO",
-      },
-    });
-    if (error) throw new Error(error.message);
-    return { ok: true };
-  });
-
-/** CEO-only: create an account with a given role (used for test users too). */
+/** CEO-only: create an account with a given role (also used for test users). */
 export const createUserAccount = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => newUserSchema.parse(input))

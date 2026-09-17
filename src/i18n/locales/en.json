@@ -22,7 +22,28 @@
     "account": "Account",
     "profile": "Profile",
     "signIn": "Sign in",
+    "signOut": "Sign out",
     "guest": "Guest"
+  },
+  "auth": {
+    "title": "Sign in to KEMI",
+    "subtitle": "Use your company email and password.",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "noSelfSignup": "Accounts are created by an admin. Contact your admin for access."
+  },
+  "users": {
+    "title": "User management",
+    "desc": "CEO only: create new accounts and assign their role.",
+    "fullName": "Full name",
+    "division": "Division",
+    "role": "Role",
+    "create": "Create account",
+    "creating": "Creating...",
+    "created": "Account created.",
+    "failed": "Could not create the account."
   },
   "install": {
     "button": "Install app",
@@ -54,7 +75,7 @@
     "appearanceDesc": "Choose light or dark mode.",
     "language": "Language",
     "languageDesc": "Choose the interface language.",
-    "note": "Preferences are stored on this device. They will move to the user profile later."
+    "note": "Preferences are stored in your user profile and follow you to other devices."
   },
   "common": {
     "soon": "Coming soon"
