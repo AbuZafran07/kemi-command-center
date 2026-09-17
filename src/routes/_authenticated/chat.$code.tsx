@@ -149,13 +149,19 @@ function AgentChatPage() {
               className={message.role === "user" ? "flex justify-end" : "flex justify-start"}
             >
               <div
-                className={`max-w-[85%] whitespace-pre-wrap rounded-xl px-3 py-2 text-sm ${
+                className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${
                   message.role === "user"
-                    ? "bg-brand text-brand-foreground"
+                    ? "whitespace-pre-wrap bg-brand text-brand-foreground"
                     : "bg-muted text-foreground"
                 }`}
               >
-                {message.content}
+                {message.role === "user" ? (
+                  message.content
+                ) : (
+                  <div className="prose prose-sm max-w-none dark:prose-invert [&_table]:block [&_table]:overflow-x-auto [&_td]:border [&_td]:px-2 [&_td]:py-1 [&_th]:border [&_th]:px-2 [&_th]:py-1">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
+                  </div>
+                )}
               </div>
             </div>
           ))}
