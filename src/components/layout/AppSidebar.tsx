@@ -1,7 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Bot, LayoutDashboard, MessagesSquare, Settings } from "lucide-react";
+import {
+  Bot,
+  ClipboardCheck,
+  KeyRound,
+  LayoutDashboard,
+  MessagesSquare,
+  ScrollText,
+  Settings,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { AgentAvatar } from "@/components/agents/AgentAvatar";
@@ -22,8 +30,12 @@ const items = [
   { key: "dashboard", url: "/", icon: LayoutDashboard },
   { key: "agents", url: "/agents", icon: Bot },
   { key: "chat", url: "/chat", icon: MessagesSquare },
+  { key: "requests", url: "/requests", icon: KeyRound },
   { key: "settings", url: "/settings", icon: Settings },
 ] as const;
+
+const APPROVER_ROLES = ["CEO", "Director", "Manager"];
+const AUDIT_ROLES = ["CEO", "Director"];
 
 const CHAT_ENABLED = ["JOKO", "WAWAN", "ALDI"];
 
