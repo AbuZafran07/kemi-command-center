@@ -41,7 +41,7 @@ const CHAT_ENABLED = ["JOKO", "WAWAN", "ALDI"];
 
 export function AppSidebar() {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const fetchAgents = useServerFn(listMyAgents);
 
@@ -51,6 +51,17 @@ export function AppSidebar() {
     enabled: Boolean(user),
   });
   const agents = data ?? [];
+
+  const navItems = [
+    ...items.filter((item) => item.key !== "settings"),
+    ...(role && APPROVER_ROLES.includes(role)
+      ? [{ key: "approvals", url: "/approvals", icon: ClipboardCheck } as const]
+      : []),
+    ...(role && AUDIT_ROLES.includes(role)
+      ? [{ key: "audit", url: "/audit", icon: ScrollText } as const]
+      : []),
+    ...items.filter((item) => item.key === "settings"),
+  ];
 
   return (
     <Sidebar collapsible="icon">
