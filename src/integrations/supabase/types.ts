@@ -14,6 +14,207 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_requests: {
+        Row: {
+          agent_code: string
+          created_at: string
+          id: string
+          purpose: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent_code: string
+          created_at?: string
+          id?: string
+          purpose?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agent_code?: string
+          created_at?: string
+          id?: string
+          purpose?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_requests_agent_code_fkey"
+            columns: ["agent_code"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      agent_permissions: {
+        Row: {
+          agent_code: string
+          allowed: boolean
+          created_at: string
+          division: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+        }
+        Insert: {
+          agent_code: string
+          allowed?: boolean
+          created_at?: string
+          division?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+        }
+        Update: {
+          agent_code?: string
+          allowed?: boolean
+          created_at?: string
+          division?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_permissions_agent_code_fkey"
+            columns: ["agent_code"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      agents: {
+        Row: {
+          avatar_color: string
+          code: string
+          created_at: string
+          description: string
+          division: string
+          id: string
+          is_active: boolean
+          name: string
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_color?: string
+          code: string
+          created_at?: string
+          description?: string
+          division?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          role?: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_color?: string
+          code?: string
+          created_at?: string
+          description?: string
+          division?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      approvals: {
+        Row: {
+          access_request_id: string
+          approver_id: string
+          created_at: string
+          decision: string
+          id: string
+          note: string
+        }
+        Insert: {
+          access_request_id: string
+          approver_id: string
+          created_at?: string
+          decision: string
+          id?: string
+          note?: string
+        }
+        Update: {
+          access_request_id?: string
+          approver_id?: string
+          created_at?: string
+          decision?: string
+          id?: string
+          note?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "approvals_access_request_id_fkey"
+            columns: ["access_request_id"]
+            isOneToOne: false
+            referencedRelation: "access_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_log: {
+        Row: {
+          action: string
+          agent_code: string | null
+          created_at: string
+          data_scope: string
+          detail: Json
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          agent_code?: string | null
+          created_at?: string
+          data_scope?: string
+          detail?: Json
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          agent_code?: string | null
+          created_at?: string
+          data_scope?: string
+          detail?: Json
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      data_classifications: {
+        Row: {
+          code: string
+          created_at: string
+          description: string
+          id: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string
+          id?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string
+          id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -67,6 +268,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_use_agent: {
+        Args: { _agent_code: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
