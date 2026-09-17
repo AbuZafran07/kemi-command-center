@@ -1,0 +1,62 @@
+{
+  "app": {
+    "name": "KEMI",
+    "fullName": "Kemika Enterprise Mind Intelligence",
+    "tagline": "Think. Act. Deliver.",
+    "company": "PT Kemika Karya Pratama"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "agents": "Agent Center",
+    "chat": "Chat",
+    "settings": "Settings",
+    "sectionMain": "Navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "header": {
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light mode",
+    "themeDark": "Dark mode",
+    "account": "Account",
+    "profile": "Profile",
+    "signIn": "Sign in",
+    "guest": "Guest"
+  },
+  "install": {
+    "button": "Install app",
+    "hint": "Install KEMI on your device"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of KEMI activity and system status.",
+    "cardAgents": "Active agents",
+    "cardTasks": "Running tasks",
+    "cardDocs": "Indexed documents",
+    "cardAudit": "Audit records",
+    "placeholder": "Data will be available in the next phase."
+  },
+  "agents": {
+    "title": "Agent Center",
+    "subtitle": "Manage and run KEMI agents.",
+    "placeholder": "The agent list will be available in the next phase."
+  },
+  "chat": {
+    "title": "Chat",
+    "subtitle": "Converse with KEMI.",
+    "placeholder": "The chat interface will be available in the next phase."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Display and language preferences.",
+    "appearance": "Appearance",
+    "appearanceDesc": "Choose light or dark mode.",
+    "language": "Language",
+    "languageDesc": "Choose the interface language.",
+    "note": "Preferences are stored on this device. They will move to the user profile later."
+  },
+  "common": {
+    "soon": "Coming soon"
+  }
+}
