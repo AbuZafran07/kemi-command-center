@@ -79,7 +79,7 @@ export const sendAgentMessage = createServerFn({ method: "POST" })
         user_id: context.userId,
         agent_code: agentCode,
         action,
-        detail,
+        detail: detail as never,
         data_scope: scope,
       });
     };
