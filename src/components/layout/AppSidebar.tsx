@@ -1,7 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Bot, LayoutDashboard, MessagesSquare, Settings } from "lucide-react";
+import {
+  Bot,
+  ClipboardCheck,
+  KeyRound,
+  LayoutDashboard,
+  MessagesSquare,
+  ScrollText,
+  Settings,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { AgentAvatar } from "@/components/agents/AgentAvatar";
@@ -22,14 +30,18 @@ const items = [
   { key: "dashboard", url: "/", icon: LayoutDashboard },
   { key: "agents", url: "/agents", icon: Bot },
   { key: "chat", url: "/chat", icon: MessagesSquare },
+  { key: "requests", url: "/requests", icon: KeyRound },
   { key: "settings", url: "/settings", icon: Settings },
 ] as const;
+
+const APPROVER_ROLES = ["CEO", "Director", "Manager"];
+const AUDIT_ROLES = ["CEO", "Director"];
 
 const CHAT_ENABLED = ["JOKO", "WAWAN", "ALDI"];
 
 export function AppSidebar() {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const fetchAgents = useServerFn(listMyAgents);
 
@@ -40,6 +52,17 @@ export function AppSidebar() {
   });
   const agents = data ?? [];
 
+  const navItems = [
+    ...items.filter((item) => item.key !== "settings"),
+    ...(role && APPROVER_ROLES.includes(role)
+      ? [{ key: "approvals", url: "/approvals", icon: ClipboardCheck } as const]
+      : []),
+    ...(role && AUDIT_ROLES.includes(role)
+      ? [{ key: "audit", url: "/audit", icon: ScrollText } as const]
+      : []),
+    ...items.filter((item) => item.key === "settings"),
+  ];
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -47,7 +70,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>{t("nav.sectionMain")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {navItems.map((item) => (
                 <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton asChild isActive={pathname === item.url}>
                     <Link to={item.url} className="flex items-center gap-2">

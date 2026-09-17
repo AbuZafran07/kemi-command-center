@@ -13,7 +13,10 @@
     "sectionMain": "Navigation",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "sectionAgents": "Your agents"
+    "sectionAgents": "Your agents",
+    "requests": "Access Requests",
+    "approvals": "Approval Inbox",
+    "audit": "Audit Log"
   },
   "header": {
     "language": "Language",
@@ -111,5 +114,58 @@
   "common": {
     "soon": "Coming soon",
     "loading": "Loading..."
+  },
+  "access": {
+    "title": "Access Requests",
+    "subtitle": "Request access to agents you are not authorised for yet, and track the status.",
+    "newTitle": "New request",
+    "pickAgent": "Select an agent",
+    "requestAccess": "Request Access",
+    "myTitle": "My requests",
+    "myEmpty": "No requests yet.",
+    "dialogTitle": "Request access to {{agent}}",
+    "dialogDesc": "Explain why you need it. The request is routed to the authorised approver.",
+    "purposePlaceholder": "Example: I need to monitor my team's attendance weekly.",
+    "submit": "Send request",
+    "submitting": "Sending...",
+    "submitted": "Request sent.",
+    "approverRole": "Approver: {{role}}",
+    "errorPending": "You already have a pending request for this agent.",
+    "errorAlready": "You are already authorised for this agent.",
+    "errorGeneric": "Could not send the request.",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
+  "approvals": {
+    "title": "Approval Inbox",
+    "subtitle": "Requests waiting for your decision. You cannot approve your own request.",
+    "empty": "No pending requests.",
+    "purpose": "Purpose",
+    "notePlaceholder": "Decision note (optional)",
+    "approve": "Approve",
+    "reject": "Reject",
+    "approved": "Request approved.",
+    "rejected": "Request rejected.",
+    "notAllowed": "You cannot decide this request.",
+    "failed": "Could not save the decision."
+  },
+  "audit": {
+    "title": "Audit Log",
+    "subtitle": "Trail of data access and key actions. Read-only.",
+    "filters": "Filters",
+    "filterUser": "User",
+    "filterAgent": "Agent",
+    "filterFrom": "From date",
+    "filterTo": "To date",
+    "allAgents": "All agents",
+    "empty": "No entries for these filters.",
+    "colTime": "Time",
+    "colUser": "User",
+    "colAgent": "Agent",
+    "colAction": "Action",
+    "colScope": "Data scope"
   }
 }

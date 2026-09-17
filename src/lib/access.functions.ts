@@ -26,7 +26,6 @@ export type AuditRow = {
   data_scope: string;
   user_id: string | null;
   user_name: string;
-  detail: unknown;
 };
 
 /** Hierarchy routing: who must approve a request coming from this role. */
@@ -248,7 +247,7 @@ export const listAuditLog = createServerFn({ method: "GET" })
   .handler(async ({ data, context }): Promise<AuditRow[]> => {
     let query = context.supabase
       .from("audit_log")
-      .select("id, created_at, action, agent_code, data_scope, user_id, detail")
+      .select("id, created_at, action, agent_code, data_scope, user_id")
       .order("created_at", { ascending: false })
       .limit(data.limit);
 
@@ -269,6 +268,5 @@ export const listAuditLog = createServerFn({ method: "GET" })
       data_scope: row.data_scope,
       user_id: row.user_id,
       user_name: row.user_id ? (names[row.user_id] ?? "—") : "—",
-      detail: row.detail,
     }));
   });
