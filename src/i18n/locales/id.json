@@ -22,7 +22,28 @@
     "account": "Akun",
     "profile": "Profil",
     "signIn": "Masuk",
+    "signOut": "Keluar",
     "guest": "Tamu"
+  },
+  "auth": {
+    "title": "Masuk ke KEMI",
+    "subtitle": "Gunakan email dan kata sandi perusahaan Anda.",
+    "email": "Email",
+    "password": "Kata sandi",
+    "signIn": "Masuk",
+    "signingIn": "Memproses...",
+    "noSelfSignup": "Akun dibuat oleh admin. Hubungi admin bila belum punya akses."
+  },
+  "users": {
+    "title": "Manajemen pengguna",
+    "desc": "Khusus CEO: buat akun baru beserta perannya.",
+    "fullName": "Nama lengkap",
+    "division": "Divisi",
+    "role": "Peran",
+    "create": "Buat akun",
+    "creating": "Membuat...",
+    "created": "Akun berhasil dibuat.",
+    "failed": "Akun gagal dibuat."
   },
   "install": {
     "button": "Pasang aplikasi",
@@ -54,7 +75,7 @@
     "appearanceDesc": "Pilih mode terang atau gelap.",
     "language": "Bahasa",
     "languageDesc": "Pilih bahasa antarmuka.",
-    "note": "Preferensi disimpan di perangkat ini. Nanti akan dipindahkan ke profil pengguna."
+    "note": "Preferensi tersimpan di profil pengguna Anda dan ikut saat login di perangkat lain."
   },
   "common": {
     "soon": "Segera hadir"

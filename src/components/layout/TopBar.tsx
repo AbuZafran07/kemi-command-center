@@ -1,8 +1,8 @@
-import { Moon, Sun, User } from "lucide-react";
+import { LogOut, Moon, Sun, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { InstallButton } from "@/components/layout/InstallButton";
-import { usePreferences } from "@/components/providers/AppProviders";
+import { useAuth, usePreferences } from "@/components/providers/AppProviders";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,6 +24,8 @@ const languages: { code: SupportedLanguage; label: string }[] = [
 export function TopBar() {
   const { t } = useTranslation();
   const { theme, toggleTheme, language, setLanguage } = usePreferences();
+  const { user, profile, role, signOut } = useAuth();
+  const displayName = profile?.full_name || user?.email || t("header.guest");
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-card/80 px-3 backdrop-blur supports-[backdrop-filter]:bg-card/60 sm:px-5">
