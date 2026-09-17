@@ -194,6 +194,41 @@ export type Database = {
         }
         Relationships: []
       }
+      conversations: {
+        Row: {
+          agent_code: string
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent_code: string
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agent_code?: string
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_agent_code_fkey"
+            columns: ["agent_code"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       data_classifications: {
         Row: {
           code: string
@@ -214,6 +249,176 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      data_sources: {
+        Row: {
+          classification: string
+          code: string
+          created_at: string
+          data_as_of: string
+          id: string
+          is_demo: boolean
+          name: string
+          system: string
+        }
+        Insert: {
+          classification?: string
+          code: string
+          created_at?: string
+          data_as_of?: string
+          id?: string
+          is_demo?: boolean
+          name: string
+          system?: string
+        }
+        Update: {
+          classification?: string
+          code?: string
+          created_at?: string
+          data_as_of?: string
+          id?: string
+          is_demo?: boolean
+          name?: string
+          system?: string
+        }
+        Relationships: []
+      }
+      demo_attendance: {
+        Row: {
+          created_at: string
+          employee_no: string
+          id: string
+          late_minutes: number
+          note: string
+          status: string
+          work_date: string
+        }
+        Insert: {
+          created_at?: string
+          employee_no: string
+          id?: string
+          late_minutes?: number
+          note?: string
+          status: string
+          work_date: string
+        }
+        Update: {
+          created_at?: string
+          employee_no?: string
+          id?: string
+          late_minutes?: number
+          note?: string
+          status?: string
+          work_date?: string
+        }
+        Relationships: []
+      }
+      demo_employees: {
+        Row: {
+          created_at: string
+          division: string
+          employee_no: string
+          full_name: string
+          id: string
+          join_date: string
+          position: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          division: string
+          employee_no: string
+          full_name: string
+          id?: string
+          join_date: string
+          position: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          division?: string
+          employee_no?: string
+          full_name?: string
+          id?: string
+          join_date?: string
+          position?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      demo_stock: {
+        Row: {
+          created_at: string
+          expiry_date: string | null
+          id: string
+          product_name: string
+          qty_on_hand: number
+          sku: string
+          uom: string
+          warehouse: string
+        }
+        Insert: {
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          product_name: string
+          qty_on_hand?: number
+          sku: string
+          uom?: string
+          warehouse: string
+        }
+        Update: {
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          product_name?: string
+          qty_on_hand?: number
+          sku?: string
+          uom?: string
+          warehouse?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          data_as_of: string
+          id: string
+          role: string
+          sources: Json
+          user_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          data_as_of?: string
+          id?: string
+          role: string
+          sources?: Json
+          user_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          data_as_of?: string
+          id?: string
+          role?: string
+          sources?: Json
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
