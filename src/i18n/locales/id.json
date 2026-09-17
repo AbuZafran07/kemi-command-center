@@ -1,0 +1,62 @@
+{
+  "app": {
+    "name": "KEMI",
+    "fullName": "Kemika Enterprise Mind Intelligence",
+    "tagline": "Think. Act. Deliver.",
+    "company": "PT Kemika Karya Pratama"
+  },
+  "nav": {
+    "dashboard": "Dasbor",
+    "agents": "Pusat Agen",
+    "chat": "Obrolan",
+    "settings": "Pengaturan",
+    "sectionMain": "Navigasi",
+    "openMenu": "Buka menu",
+    "closeMenu": "Tutup menu"
+  },
+  "header": {
+    "language": "Bahasa",
+    "theme": "Tema",
+    "themeLight": "Mode terang",
+    "themeDark": "Mode gelap",
+    "account": "Akun",
+    "profile": "Profil",
+    "signIn": "Masuk",
+    "guest": "Tamu"
+  },
+  "install": {
+    "button": "Pasang aplikasi",
+    "hint": "Pasang KEMI di perangkat Anda"
+  },
+  "dashboard": {
+    "title": "Dasbor",
+    "subtitle": "Ringkasan aktivitas dan status sistem KEMI.",
+    "cardAgents": "Agen aktif",
+    "cardTasks": "Tugas berjalan",
+    "cardDocs": "Dokumen terindeks",
+    "cardAudit": "Catatan audit",
+    "placeholder": "Data akan tersedia pada fase berikutnya."
+  },
+  "agents": {
+    "title": "Pusat Agen",
+    "subtitle": "Kelola dan jalankan agen KEMI.",
+    "placeholder": "Daftar agen akan tersedia pada fase berikutnya."
+  },
+  "chat": {
+    "title": "Obrolan",
+    "subtitle": "Berdialog dengan KEMI.",
+    "placeholder": "Antarmuka obrolan akan tersedia pada fase berikutnya."
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "subtitle": "Preferensi tampilan dan bahasa.",
+    "appearance": "Tampilan",
+    "appearanceDesc": "Pilih mode terang atau gelap.",
+    "language": "Bahasa",
+    "languageDesc": "Pilih bahasa antarmuka.",
+    "note": "Preferensi disimpan di perangkat ini. Nanti akan dipindahkan ke profil pengguna."
+  },
+  "common": {
+    "soon": "Segera hadir"
+  }
+}
