@@ -67,6 +67,11 @@ export function TopBar() {
           {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </Button>
 
+        <div className="hidden text-right leading-tight sm:block">
+          <p className="text-sm font-medium">{displayName}</p>
+          {role ? <p className="text-xs text-muted-foreground">{role}</p> : null}
+        </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" aria-label={t("header.account")}>
@@ -74,10 +79,17 @@ export function TopBar() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{t("header.guest")}</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              <span className="block">{displayName}</span>
+              <span className="block text-xs font-normal text-muted-foreground">
+                {role ?? t("header.guest")}
+              </span>
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem disabled>{t("header.profile")}</DropdownMenuItem>
-            <DropdownMenuItem disabled>{t("header.signIn")}</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => void signOut()}>
+              <LogOut className="mr-2 h-4 w-4" />
+              {t("header.signOut")}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
