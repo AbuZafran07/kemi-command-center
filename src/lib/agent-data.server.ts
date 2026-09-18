@@ -89,10 +89,72 @@ async function fetchWarehouseDataset(admin: AdminClient): Promise<AgentDataset> 
   };
 }
 
+/** SALLY — sales performance (demo). */
+async function fetchSalesDataset(admin: AdminClient): Promise<AgentDataset> {
+  const { data } = await admin
+    .from("demo_sales")
+    .select("invoice_no, order_date, customer, sales_person, product, amount, status")
+    .order("order_date", { ascending: false })
+    .limit(200);
+  return {
+    sourceCodes: ["SALES_DEMO"],
+    dataAsOf: await getDataAsOf(admin, "SALES_DEMO"),
+    records: data ?? [],
+    scope: "Penjualan: invoice, tanggal order, pelanggan, produk, nilai, status.",
+  };
+}
+
+/** PIA — AR/AP & cash position (demo). */
+async function fetchFinanceDataset(admin: AdminClient): Promise<AgentDataset> {
+  const [{ data: ar }, { data: ap }, { data: cash }] = await Promise.all([
+    admin
+      .from("demo_receivables")
+      .select("invoice_no, customer, amount, due_date, status")
+      .order("due_date"),
+    admin
+      .from("demo_payables")
+      .select("bill_no, supplier, amount, due_date, status")
+      .order("due_date"),
+    admin
+      .from("demo_cash_positions")
+      .select("as_of_date, account, balance")
+      .order("as_of_date", { ascending: false })
+      .limit(20),
+  ]);
+  return {
+    sourceCodes: ["ARAP_DEMO", "CASH_DEMO"],
+    dataAsOf: await getDataAsOf(admin, "ARAP_DEMO"),
+    records: [
+      { dataset: "receivables", rows: ar ?? [] },
+      { dataset: "payables", rows: ap ?? [] },
+      { dataset: "cash_positions", rows: cash ?? [] },
+    ],
+    scope: "Piutang, utang, dan posisi kas: nilai, jatuh tempo, status.",
+  };
+}
+
+/** PURI — purchasing / outstanding PO (demo). */
+async function fetchPurchasingDataset(admin: AdminClient): Promise<AgentDataset> {
+  const { data } = await admin
+    .from("demo_purchase_orders")
+    .select("po_no, supplier, order_date, eta_date, amount, status")
+    .order("order_date", { ascending: false })
+    .limit(200);
+  return {
+    sourceCodes: ["PURCHASING_DEMO"],
+    dataAsOf: await getDataAsOf(admin, "PURCHASING_DEMO"),
+    records: data ?? [],
+    scope: "Pembelian: nomor PO, supplier, ETA, nilai, status outstanding.",
+  };
+}
+
 const FETCHERS: Record<string, (admin: AdminClient) => Promise<AgentDataset>> = {
   JOKO: fetchHrDataset,
   ALDI: fetchAttendanceDataset,
   WAWAN: fetchWarehouseDataset,
+  SALLY: fetchSalesDataset,
+  PIA: fetchFinanceDataset,
+  PURI: fetchPurchasingDataset,
 };
 
 /** Agents that already have a data layer wired up in this phase. */
