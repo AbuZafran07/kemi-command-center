@@ -16,7 +16,8 @@
     "sectionAgents": "Your agents",
     "requests": "Access Requests",
     "approvals": "Approval Inbox",
-    "audit": "Audit Log"
+    "audit": "Audit Log",
+    "briefing": "Daily Briefing"
   },
   "header": {
     "language": "Language",
@@ -167,5 +168,58 @@
     "colAgent": "Agent",
     "colAction": "Action",
     "colScope": "Data scope"
+  },
+  "briefing": {
+    "title": "Daily Briefing",
+    "subtitle": "Cross-division executive summary from the daily snapshot",
+    "summaryTitle": "Business summary by Arca",
+    "generate": "Build briefing",
+    "generating": "Building...",
+    "generatingHint": "Arca is consulting the agents you are allowed to use. This can take a few minutes.",
+    "emptyNarrative": "No summary yet. Click \"Build briefing\" to let Arca compose it from the agents you may use.",
+    "failed": "The briefing could not be built. Please try again.",
+    "forbidden": "You are not authorised for the Daily Briefing yet. Request access to the Arca agent first.",
+    "noSnapshot": "No daily snapshot available yet.",
+    "noPrevious": "No previous period yet",
+    "noChange": "Unchanged vs previous period",
+    "vsPrevious": "vs previous period",
+    "source": "Source",
+    "period": "Data period",
+    "limits": "Orchestration limits: {{calls}}/{{maxCalls}} agent calls, depth {{depth}}/{{maxDepth}}.",
+    "section": {
+      "sales": "Sales",
+      "cash": "Cash, AR & AP",
+      "stock": "Stock & Expiry Risk",
+      "purchasing": "Outstanding Purchasing",
+      "people": "People & Attendance"
+    },
+    "metric": {
+      "sales_amount_last_month": "Sales value (latest month)",
+      "sales_orders_last_month": "Orders (latest month)",
+      "cash_balance": "Cash position",
+      "ar_outstanding": "Receivables outstanding",
+      "ar_overdue": "Receivables overdue",
+      "ap_outstanding": "Payables outstanding",
+      "stock_qty_total": "Total stock quantity",
+      "stock_sku_empty": "Out-of-stock SKUs",
+      "stock_expiry_risk_90d": "SKUs at expiry risk (90 days)",
+      "po_outstanding_amount": "Outstanding PO value",
+      "po_outstanding_count": "Outstanding POs",
+      "headcount_active": "Active employees",
+      "attendance_issue_last_day": "Late & absent (last day)"
+    },
+    "reason": {
+      "not_permitted": "Outside your permissions",
+      "no_data_layer": "Data not connected yet",
+      "cycle_detected": "Call cycle prevented",
+      "max_depth_exceeded": "Max depth reached",
+      "budget_exhausted": "Call budget exhausted",
+      "deadline_exceeded": "Time budget exceeded",
+      "empty_answer": "No answer returned",
+      "agent_not_found": "Agent not found",
+      "AI_RATE_LIMITED": "AI service is busy",
+      "AI_UNAVAILABLE": "AI service unavailable",
+      "AI_ERROR": "AI service error"
+    }
   }
 }
