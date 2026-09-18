@@ -16,7 +16,8 @@
     "sectionAgents": "Agen Anda",
     "requests": "Permohonan Akses",
     "approvals": "Kotak Persetujuan",
-    "audit": "Catatan Audit"
+    "audit": "Catatan Audit",
+    "briefing": "Daily Briefing"
   },
   "header": {
     "language": "Bahasa",
@@ -167,5 +168,58 @@
     "colAgent": "Agen",
     "colAction": "Aksi",
     "colScope": "Lingkup data"
+  },
+  "briefing": {
+    "title": "Daily Briefing",
+    "subtitle": "Ringkasan eksekutif lintas divisi dari rekap harian",
+    "summaryTitle": "Ringkasan bisnis oleh Arca",
+    "generate": "Susun briefing",
+    "generating": "Menyusun...",
+    "generatingHint": "Arca sedang menghubungi agen-agen yang berwenang untuk Anda. Ini bisa memakan waktu hingga beberapa menit.",
+    "emptyNarrative": "Belum ada ringkasan. Klik \"Susun briefing\" untuk meminta Arca menyusunnya dari agen yang berwenang untuk Anda.",
+    "failed": "Briefing gagal disusun. Silakan coba lagi.",
+    "forbidden": "Anda belum berwenang membuka Daily Briefing. Ajukan akses ke agen Arca terlebih dahulu.",
+    "noSnapshot": "Rekap harian belum tersedia.",
+    "noPrevious": "Belum ada data periode sebelumnya",
+    "noChange": "Tidak berubah vs periode lalu",
+    "vsPrevious": "vs periode lalu",
+    "source": "Sumber",
+    "period": "Periode data",
+    "limits": "Batas orkestrasi: {{calls}}/{{maxCalls}} panggilan agen, kedalaman {{depth}}/{{maxDepth}}.",
+    "section": {
+      "sales": "Penjualan",
+      "cash": "Kas, Piutang & Utang",
+      "stock": "Stok & Risiko Expiry",
+      "purchasing": "Pembelian Outstanding",
+      "people": "People & Absensi"
+    },
+    "metric": {
+      "sales_amount_last_month": "Nilai penjualan (bulan terakhir)",
+      "sales_orders_last_month": "Jumlah order (bulan terakhir)",
+      "cash_balance": "Posisi kas",
+      "ar_outstanding": "Piutang beredar",
+      "ar_overdue": "Piutang jatuh tempo",
+      "ap_outstanding": "Utang beredar",
+      "stock_qty_total": "Total kuantitas stok",
+      "stock_sku_empty": "SKU stok kosong",
+      "stock_expiry_risk_90d": "SKU risiko expiry (90 hari)",
+      "po_outstanding_amount": "Nilai PO outstanding",
+      "po_outstanding_count": "Jumlah PO outstanding",
+      "headcount_active": "Karyawan aktif",
+      "attendance_issue_last_day": "Keterlambatan & absen (hari terakhir)"
+    },
+    "reason": {
+      "not_permitted": "Di luar izin Anda",
+      "no_data_layer": "Data belum tersambung",
+      "cycle_detected": "Siklus panggilan dicegah",
+      "max_depth_exceeded": "Kedalaman maksimum tercapai",
+      "budget_exhausted": "Kuota panggilan habis",
+      "deadline_exceeded": "Waktu proses habis",
+      "empty_answer": "Tidak ada jawaban",
+      "agent_not_found": "Agen tidak ditemukan",
+      "AI_RATE_LIMITED": "Layanan AI sedang sibuk",
+      "AI_UNAVAILABLE": "Layanan AI tidak tersedia",
+      "AI_ERROR": "Gangguan layanan AI"
+    }
   }
 }

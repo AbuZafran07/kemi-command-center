@@ -9,6 +9,7 @@ import {
   MessagesSquare,
   ScrollText,
   Settings,
+  Sparkles,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -36,8 +37,9 @@ const items = [
 
 const APPROVER_ROLES = ["CEO", "Director", "Manager"];
 const AUDIT_ROLES = ["CEO", "Director"];
+const BRIEFING_ROLES = ["CEO", "Director"];
 
-const CHAT_ENABLED = ["JOKO", "WAWAN", "ALDI"];
+const CHAT_ENABLED = ["ARCA", "JOKO", "WAWAN", "ALDI", "SALLY", "PIA", "PURI"];
 
 export function AppSidebar() {
   const { t } = useTranslation();
@@ -54,6 +56,9 @@ export function AppSidebar() {
 
   const navItems = [
     ...items.filter((item) => item.key !== "settings"),
+    ...(role && BRIEFING_ROLES.includes(role)
+      ? [{ key: "briefing", url: "/briefing", icon: Sparkles } as const]
+      : []),
     ...(role && APPROVER_ROLES.includes(role)
       ? [{ key: "approvals", url: "/approvals", icon: ClipboardCheck } as const]
       : []),
