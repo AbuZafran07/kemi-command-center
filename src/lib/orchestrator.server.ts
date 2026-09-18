@@ -25,7 +25,7 @@ type UserClient = { rpc: (fn: string, args: Record<string, unknown>) => Promise<
 
 export const ORCHESTRATION_LIMITS = {
   MAX_DEPTH: 4,
-  MAX_AGENT_CALLS: 6,
+  MAX_AGENT_CALLS: 8,
   DEADLINE_MS: 180_000,
 } as const;
 
@@ -64,9 +64,10 @@ export class OrchestrationBudget {
     return this.calls;
   }
 
-  /** Returns a refusal reason, or null when one more call is allowed. */
-  check(): string | null {
-    if (this.calls >= this.maxCalls) return "budget_exhausted";
+  /** Returns a refusal reason, or null when one more call is allowed.
+   *  `reserve` keeps room for later calls (e.g. the final ARCA synthesis). */
+  check(reserve = 0): string | null {
+    if (this.calls + reserve >= this.maxCalls) return "budget_exhausted";
     if (Date.now() - this.startedAt > this.deadlineMs) return "deadline_exceeded";
     return null;
   }
@@ -209,7 +210,7 @@ export async function askSubAgent(params: {
     return { ...base, agentName: agent.name, reason: "no_data_layer" };
   }
 
-  const refusal = budget.check();
+  const refusal = budget.check(1); // keep one call for ARCA's synthesis
   if (refusal) {
     budget.skipped.push({ agentCode, reason: refusal });
     return { ...base, agentName: agent.name, reason: refusal };

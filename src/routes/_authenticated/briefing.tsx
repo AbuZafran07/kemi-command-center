@@ -85,7 +85,11 @@ function BriefingPage() {
   const fetchMetrics = useServerFn(getBriefingMetrics);
   const runNarrative = useServerFn(generateBriefingNarrative);
 
-  const metricsQuery = useQuery({ queryKey: ["briefing-metrics"], queryFn: () => fetchMetrics() });
+  const metricsQuery = useQuery({
+    queryKey: ["briefing-metrics"],
+    queryFn: () => fetchMetrics(),
+    retry: false,
+  });
   const narrative = useMutation({ mutationFn: () => runNarrative({ data: undefined }) });
 
   const metrics = metricsQuery.data?.metrics ?? [];
