@@ -9,6 +9,7 @@ import {
   MessagesSquare,
   ScrollText,
   Settings,
+  Sparkles,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
