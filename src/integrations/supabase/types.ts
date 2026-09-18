@@ -280,6 +280,39 @@ export type Database = {
           },
         ]
       }
+      daily_snapshots: {
+        Row: {
+          created_at: string
+          detail: Json
+          id: string
+          metric_key: string
+          metric_value: number
+          snapshot_date: string
+          source_code: string
+          unit: string
+        }
+        Insert: {
+          created_at?: string
+          detail?: Json
+          id?: string
+          metric_key: string
+          metric_value?: number
+          snapshot_date: string
+          source_code?: string
+          unit?: string
+        }
+        Update: {
+          created_at?: string
+          detail?: Json
+          id?: string
+          metric_key?: string
+          metric_value?: number
+          snapshot_date?: string
+          source_code?: string
+          unit?: string
+        }
+        Relationships: []
+      }
       data_classifications: {
         Row: {
           code: string
@@ -364,6 +397,30 @@ export type Database = {
         }
         Relationships: []
       }
+      demo_cash_positions: {
+        Row: {
+          account: string
+          as_of_date: string
+          balance: number
+          created_at: string
+          id: string
+        }
+        Insert: {
+          account: string
+          as_of_date: string
+          balance?: number
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          account?: string
+          as_of_date?: string
+          balance?: number
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       demo_employees: {
         Row: {
           created_at: string
@@ -393,6 +450,135 @@ export type Database = {
           id?: string
           join_date?: string
           position?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      demo_payables: {
+        Row: {
+          amount: number
+          bill_no: string
+          created_at: string
+          due_date: string
+          id: string
+          status: string
+          supplier: string
+        }
+        Insert: {
+          amount?: number
+          bill_no: string
+          created_at?: string
+          due_date: string
+          id?: string
+          status?: string
+          supplier: string
+        }
+        Update: {
+          amount?: number
+          bill_no?: string
+          created_at?: string
+          due_date?: string
+          id?: string
+          status?: string
+          supplier?: string
+        }
+        Relationships: []
+      }
+      demo_purchase_orders: {
+        Row: {
+          amount: number
+          created_at: string
+          eta_date: string | null
+          id: string
+          order_date: string
+          po_no: string
+          status: string
+          supplier: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          eta_date?: string | null
+          id?: string
+          order_date: string
+          po_no: string
+          status?: string
+          supplier: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          eta_date?: string | null
+          id?: string
+          order_date?: string
+          po_no?: string
+          status?: string
+          supplier?: string
+        }
+        Relationships: []
+      }
+      demo_receivables: {
+        Row: {
+          amount: number
+          created_at: string
+          customer: string
+          due_date: string
+          id: string
+          invoice_no: string
+          status: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          customer: string
+          due_date: string
+          id?: string
+          invoice_no: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          customer?: string
+          due_date?: string
+          id?: string
+          invoice_no?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      demo_sales: {
+        Row: {
+          amount: number
+          created_at: string
+          customer: string
+          id: string
+          invoice_no: string
+          order_date: string
+          product: string
+          sales_person: string
+          status: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          customer: string
+          id?: string
+          invoice_no: string
+          order_date: string
+          product?: string
+          sales_person?: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          customer?: string
+          id?: string
+          invoice_no?: string
+          order_date?: string
+          product?: string
+          sales_person?: string
           status?: string
         }
         Relationships: []
@@ -524,6 +710,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      build_daily_snapshot: { Args: { p_date?: string }; Returns: number }
       can_use_agent: {
         Args: { _agent_code: string; _user_id: string }
         Returns: boolean
