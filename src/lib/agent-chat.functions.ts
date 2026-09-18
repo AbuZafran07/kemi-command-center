@@ -138,10 +138,58 @@ export const sendAgentMessage = createServerFn({ method: "POST" })
       content: data.message,
     });
 
+    // --- ARCA: cross-agent orchestration (server-side, bounded) ---
+    if (agentCode === "ARCA") {
+      const { runArcaOrchestration } = await import("@/lib/orchestrator.server");
+      await audit("agent_orchestration_request", {
+        conversation_id: conversationId,
+        question_length: data.message.length,
+        language,
+      }, "cross_division");
+
+      const result = await runArcaOrchestration({
+        admin: supabaseAdmin,
+        userClient: context.supabase as never,
+        userId: context.userId,
+        question: data.message,
+        language,
+        userLabel: `${profile?.full_name || "an employee"} (${profile?.division || "-"})`,
+      });
+
+      const arcaSources = await listSourceDetails(supabaseAdmin, result.sourceCodes);
+      const { data: arcaSaved } = await context.supabase
+        .from("messages")
+        .insert({
+          conversation_id: conversationId,
+          user_id: context.userId,
+          role: "assistant",
+          content: result.answer,
+          sources: arcaSources as unknown as never,
+          data_as_of: result.dataAsOf,
+        })
+        .select("id, role, content, sources, data_as_of, created_at")
+        .single();
+
+      await audit("agent_orchestration_response", {
+        conversation_id: conversationId,
+        agents_consulted: result.reports.filter((r) => r.ok).map((r) => r.agentCode),
+        agents_skipped: result.trace.skipped,
+        model_calls: result.trace.calls,
+      }, "cross_division");
+
+      return {
+        conversationId,
+        message: arcaSaved as unknown as ChatMessage,
+        sources: arcaSources as ChatSource[],
+        dataAsOf: result.dataAsOf,
+      };
+    }
+
     // --- data layer (demo seed, swappable for real read-only RPCs) ---
     const dataset = await loadAgentDataset(supabaseAdmin, agentCode);
     const sources = dataset ? await listSourceDetails(supabaseAdmin, dataset.sourceCodes) : [];
     const dataAsOf = dataset?.dataAsOf ?? "";
+
 
     await audit("agent_chat_request", {
       question_length: data.message.length,
