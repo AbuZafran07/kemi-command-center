@@ -19,10 +19,17 @@ export type BriefingMetrics = {
   metrics: BriefingMetric[];
 };
 
-async function assertArcaAccess(context: {
-  supabase: { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown }> };
+type ArcaContext = {
+  supabase: {
+    rpc: (
+      fn: "can_use_agent",
+      args: { _user_id: string; _agent_code: string },
+    ) => PromiseLike<{ data: unknown }>;
+  };
   userId: string;
-}) {
+};
+
+async function assertArcaAccess(context: ArcaContext) {
   const { data: allowed } = await context.supabase.rpc("can_use_agent", {
     _user_id: context.userId,
     _agent_code: "ARCA",
@@ -86,7 +93,7 @@ export type BriefingNarrative = {
     agentName: string;
     ok: boolean;
     summary: string;
-    reason?: string;
+    reason?: string | undefined;
     dataAsOf: string;
   }[];
   sources: {
