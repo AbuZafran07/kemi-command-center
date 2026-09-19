@@ -116,11 +116,27 @@
   "settings": {
     "title": "Settings",
     "subtitle": "Display and language preferences.",
+    "tabProfile": "My Profile",
+    "tabPreferences": "Appearance & Language",
+    "tabUsers": "Users",
     "appearance": "Appearance",
     "appearanceDesc": "Choose light or dark mode.",
     "language": "Language",
     "languageDesc": "Choose the interface language.",
     "note": "Preferences are stored in your user profile and follow you to other devices."
+  },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Change your own name and profile photo.",
+    "changePhoto": "Change Photo",
+    "photoHint": "JPG, PNG, or WEBP. Max 2MB.",
+    "fullName": "Full Name",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "saved": "Profile updated successfully.",
+    "saveFailed": "Failed to save profile.",
+    "invalidType": "Unsupported photo format. Use JPG, PNG, or WEBP.",
+    "tooLarge": "Photo must be 2MB or smaller."
   },
   "common": {
     "soon": "Coming soon",

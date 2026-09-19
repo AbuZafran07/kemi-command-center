@@ -1,5 +1,13 @@
 import { useRouter } from "@tanstack/react-router";
-import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { I18nextProvider } from "react-i18next";
 import type { User } from "@supabase/supabase-js";
 
@@ -17,6 +25,7 @@ export type Profile = {
   division: string;
   language_pref: string;
   theme_pref: string;
+  avatar_url: string | null;
 };
 
 type AppPreferences = {
@@ -65,11 +74,12 @@ export function AppProviders({ children }: { children: ReactNode }) {
   useEffect(() => {
     const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const nextTheme: Theme = storedTheme === "dark" || storedTheme === "light"
-      ? storedTheme
-      : prefersDark
-        ? "dark"
-        : "light";
+    const nextTheme: Theme =
+      storedTheme === "dark" || storedTheme === "light"
+        ? storedTheme
+        : prefersDark
+          ? "dark"
+          : "light";
     setThemeState(nextTheme);
 
     const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
@@ -99,14 +109,14 @@ export function AppProviders({ children }: { children: ReactNode }) {
     const [{ data: profileRow }, { data: roleRows }] = await Promise.all([
       supabase
         .from("profiles")
-        .select("id, full_name, division, language_pref, theme_pref")
+        .select("id, full_name, division, language_pref, theme_pref, avatar_url")
         .eq("id", currentUser.id)
         .maybeSingle(),
       supabase.from("user_roles").select("role").eq("user_id", currentUser.id),
     ]);
 
     setProfile((profileRow as Profile | null) ?? null);
-    setRole(((roleRows?.[0]?.role as AppRole | undefined) ?? null));
+    setRole((roleRows?.[0]?.role as AppRole | undefined) ?? null);
 
     if (profileRow) {
       const pref = profileRow as Profile;
@@ -161,17 +171,23 @@ export function AppProviders({ children }: { children: ReactNode }) {
     [],
   );
 
-  const setTheme = useCallback((next: Theme) => {
-    setThemeState(next);
-    window.localStorage.setItem(THEME_STORAGE_KEY, next);
-    persistPreference({ theme_pref: next });
-  }, [persistPreference]);
+  const setTheme = useCallback(
+    (next: Theme) => {
+      setThemeState(next);
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
+      persistPreference({ theme_pref: next });
+    },
+    [persistPreference],
+  );
 
-  const setLanguage = useCallback((next: SupportedLanguage) => {
-    setLanguageState(next);
-    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, next);
-    persistPreference({ language_pref: next });
-  }, [persistPreference]);
+  const setLanguage = useCallback(
+    (next: SupportedLanguage) => {
+      setLanguageState(next);
+      window.localStorage.setItem(LANGUAGE_STORAGE_KEY, next);
+      persistPreference({ language_pref: next });
+    },
+    [persistPreference],
+  );
 
   const toggleTheme = useCallback(() => {
     setTheme(theme === "dark" ? "light" : "dark");

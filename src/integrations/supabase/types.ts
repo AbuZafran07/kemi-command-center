@@ -801,6 +801,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string
           division: string
           full_name: string
@@ -809,6 +810,7 @@ export type Database = {
           theme_pref: string
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string
           division?: string
           full_name?: string
@@ -817,6 +819,7 @@ export type Database = {
           theme_pref?: string
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string
           division?: string
           full_name?: string

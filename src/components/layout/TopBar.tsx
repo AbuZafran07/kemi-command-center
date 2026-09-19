@@ -1,7 +1,8 @@
-import { LogOut, Moon, Sun, User } from "lucide-react";
+import { LogOut, Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { InstallButton } from "@/components/layout/InstallButton";
+import { UserAvatar } from "@/components/profile/UserAvatar";
 import { useAuth, usePreferences } from "@/components/providers/AppProviders";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,7 +43,11 @@ export function TopBar() {
       <div className="ml-auto flex items-center gap-1.5">
         <InstallButton />
 
-        <div className="flex items-center rounded-md border border-border p-0.5" role="group" aria-label={t("header.language")}>
+        <div
+          className="flex items-center rounded-md border border-border p-0.5"
+          role="group"
+          aria-label={t("header.language")}
+        >
           {languages.map((item) => (
             <button
               key={item.code}
@@ -76,8 +81,13 @@ export function TopBar() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label={t("header.account")}>
-              <User className="h-4 w-4" />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full p-0"
+              aria-label={t("header.account")}
+            >
+              <UserAvatar name={displayName} avatarUrl={profile?.avatar_url} size="sm" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

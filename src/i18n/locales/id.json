@@ -116,11 +116,27 @@
   "settings": {
     "title": "Pengaturan",
     "subtitle": "Preferensi tampilan dan bahasa.",
+    "tabProfile": "Profil Saya",
+    "tabPreferences": "Tampilan & Bahasa",
+    "tabUsers": "Pengguna",
     "appearance": "Tampilan",
     "appearanceDesc": "Pilih mode terang atau gelap.",
     "language": "Bahasa",
     "languageDesc": "Pilih bahasa antarmuka.",
     "note": "Preferensi tersimpan di profil pengguna Anda dan ikut saat login di perangkat lain."
+  },
+  "profile": {
+    "title": "Profil Saya",
+    "subtitle": "Ubah nama dan foto profil Anda sendiri.",
+    "changePhoto": "Ganti Foto",
+    "photoHint": "JPG, PNG, atau WEBP. Maks. 2MB.",
+    "fullName": "Nama Lengkap",
+    "save": "Simpan Perubahan",
+    "saving": "Menyimpan...",
+    "saved": "Profil berhasil diperbarui.",
+    "saveFailed": "Gagal menyimpan profil.",
+    "invalidType": "Format foto tidak didukung. Gunakan JPG, PNG, atau WEBP.",
+    "tooLarge": "Ukuran foto maksimal 2MB."
   },
   "common": {
     "soon": "Segera hadir",

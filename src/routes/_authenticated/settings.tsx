@@ -4,11 +4,13 @@ import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 
 import { PageHeader } from "@/components/layout/AppShell";
+import { ProfileSettingsCard } from "@/components/profile/ProfileSettingsCard";
 import { useAuth, usePreferences, type AppRole } from "@/components/providers/AppProviders";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createUserAccount } from "@/lib/admin-users.functions";
 
 const ROLES: AppRole[] = ["CEO", "Director", "Manager", "Supervisor", "Staff"];
@@ -34,40 +36,76 @@ function SettingsPage() {
   return (
     <>
       <PageHeader title={t("settings.title")} subtitle={t("settings.subtitle")} />
-      <div className="grid max-w-3xl gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">{t("settings.appearance")}</CardTitle>
-            <CardDescription>{t("settings.appearanceDesc")}</CardDescription>
-          </CardHeader>
-          <CardContent className="flex gap-2">
-            <Button variant={theme === "light" ? "brand" : "outline"} size="sm" onClick={() => setTheme("light")}>
-              {t("header.themeLight")}
-            </Button>
-            <Button variant={theme === "dark" ? "brand" : "outline"} size="sm" onClick={() => setTheme("dark")}>
-              {t("header.themeDark")}
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="max-w-3xl">
+        <Tabs defaultValue="profile">
+          <TabsList>
+            <TabsTrigger value="profile">{t("settings.tabProfile")}</TabsTrigger>
+            <TabsTrigger value="preferences">{t("settings.tabPreferences")}</TabsTrigger>
+            {role === "CEO" ? (
+              <TabsTrigger value="users">{t("settings.tabUsers")}</TabsTrigger>
+            ) : null}
+          </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">{t("settings.language")}</CardTitle>
-            <CardDescription>{t("settings.languageDesc")}</CardDescription>
-          </CardHeader>
-          <CardContent className="flex gap-2">
-            <Button variant={language === "id" ? "brand" : "outline"} size="sm" onClick={() => setLanguage("id")}>
-              Bahasa Indonesia
-            </Button>
-            <Button variant={language === "en" ? "brand" : "outline"} size="sm" onClick={() => setLanguage("en")}>
-              English
-            </Button>
-          </CardContent>
-        </Card>
+          <TabsContent value="profile" className="mt-4">
+            <ProfileSettingsCard />
+          </TabsContent>
 
-        {role === "CEO" ? <CreateUserCard /> : null}
+          <TabsContent value="preferences" className="mt-4 space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{t("settings.appearance")}</CardTitle>
+                <CardDescription>{t("settings.appearanceDesc")}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex gap-2">
+                <Button
+                  variant={theme === "light" ? "brand" : "outline"}
+                  size="sm"
+                  onClick={() => setTheme("light")}
+                >
+                  {t("header.themeLight")}
+                </Button>
+                <Button
+                  variant={theme === "dark" ? "brand" : "outline"}
+                  size="sm"
+                  onClick={() => setTheme("dark")}
+                >
+                  {t("header.themeDark")}
+                </Button>
+              </CardContent>
+            </Card>
 
-        <p className="text-xs text-muted-foreground">{t("settings.note")}</p>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{t("settings.language")}</CardTitle>
+                <CardDescription>{t("settings.languageDesc")}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex gap-2">
+                <Button
+                  variant={language === "id" ? "brand" : "outline"}
+                  size="sm"
+                  onClick={() => setLanguage("id")}
+                >
+                  Bahasa Indonesia
+                </Button>
+                <Button
+                  variant={language === "en" ? "brand" : "outline"}
+                  size="sm"
+                  onClick={() => setLanguage("en")}
+                >
+                  English
+                </Button>
+              </CardContent>
+            </Card>
+
+            <p className="text-xs text-muted-foreground">{t("settings.note")}</p>
+          </TabsContent>
+
+          {role === "CEO" ? (
+            <TabsContent value="users" className="mt-4">
+              <CreateUserCard />
+            </TabsContent>
+          ) : null}
+        </Tabs>
       </div>
     </>
   );
@@ -112,15 +150,30 @@ function CreateUserCard() {
         <form onSubmit={handleSubmit} className="grid gap-3 sm:grid-cols-2">
           <div className="space-y-1.5">
             <Label htmlFor="new-name">{t("users.fullName")}</Label>
-            <Input id="new-name" required value={fullName} onChange={(e) => setFullName(e.target.value)} />
+            <Input
+              id="new-name"
+              required
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+            />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="new-division">{t("users.division")}</Label>
-            <Input id="new-division" value={division} onChange={(e) => setDivision(e.target.value)} />
+            <Input
+              id="new-division"
+              value={division}
+              onChange={(e) => setDivision(e.target.value)}
+            />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="new-email">{t("auth.email")}</Label>
-            <Input id="new-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input
+              id="new-email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="new-password">{t("auth.password")}</Label>
