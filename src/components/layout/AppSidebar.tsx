@@ -9,6 +9,7 @@ import {
   MessagesSquare,
   ScrollText,
   Settings,
+  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -32,6 +33,7 @@ const items = [
   { key: "agents", url: "/agents", icon: Bot },
   { key: "chat", url: "/chat", icon: MessagesSquare },
   { key: "requests", url: "/requests", icon: KeyRound },
+  { key: "actions", url: "/actions", icon: ShieldCheck },
   { key: "settings", url: "/settings", icon: Settings },
 ] as const;
 

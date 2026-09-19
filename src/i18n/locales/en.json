@@ -15,6 +15,7 @@
     "closeMenu": "Close menu",
     "sectionAgents": "Your agents",
     "requests": "Access Requests",
+    "actions": "Sensitive Actions",
     "approvals": "Approval Inbox",
     "audit": "Audit Log",
     "briefing": "Daily Briefing"
@@ -53,6 +54,15 @@
   "install": {
     "button": "Install app",
     "hint": "Install KEMI on your device"
+  },
+  "pwa": {
+    "updateAvailable": "A new version is available.",
+    "updateReload": "Reload"
+  },
+  "offline": {
+    "title": "You're offline",
+    "subtitle": "KEMI needs an internet connection to load data. The app shell stays open; reconnect to continue.",
+    "retry": "Try again"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -220,6 +230,61 @@
       "AI_RATE_LIMITED": "AI service is busy",
       "AI_UNAVAILABLE": "AI service unavailable",
       "AI_ERROR": "AI service error"
+    }
+  },
+  "actions": {
+    "pageTitle": "Sensitive Actions",
+    "pageSubtitle": "Drafts, approvals, and controlled execution for actions that change data. AI never executes without human approval.",
+    "newDraft": "New Draft",
+    "dialogTitle": "New Action Draft",
+    "dialogDesc": "This draft only records an intended action. Nothing changes until it is approved and executed.",
+    "pickAction": "Action Type",
+    "pickActionPlaceholder": "Select a sensitive action",
+    "pickAgent": "On Behalf Of Agent",
+    "pickAgentPlaceholder": "Select an agent",
+    "title": "Draft Title",
+    "employeeNo": "Employee No.",
+    "letterType": "Letter Type",
+    "reason": "Reason",
+    "field": "Field to Change",
+    "fieldPlaceholder": "Select a field",
+    "fieldDivision": "Division",
+    "fieldPosition": "Position",
+    "fieldStatus": "Status",
+    "newValue": "New Value",
+    "poNo": "PO Number",
+    "submit": "Submit Draft",
+    "submitting": "Submitting...",
+    "created": "Action draft created.",
+    "errorForbiddenAgent": "You are not permitted to use this agent.",
+    "errorInvalidPayload": "The draft data is incomplete or invalid.",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "pendingTitle": "Awaiting My Decision",
+    "pendingEmpty": "No drafts are waiting on your decision.",
+    "notePlaceholder": "Decision note (optional)",
+    "approve": "Approve",
+    "reject": "Reject",
+    "approved": "Draft approved.",
+    "rejected": "Draft rejected.",
+    "notDecidable": "You cannot decide this draft.",
+    "decideFailed": "The decision could not be saved.",
+    "executableTitle": "Ready to Execute",
+    "executableEmpty": "No drafts are ready for execution.",
+    "execute": "Execute",
+    "executed": "Action executed successfully.",
+    "errorSegregation": "You cannot execute a draft you submitted yourself.",
+    "errorForbiddenExecute": "You are not authorized to execute this draft.",
+    "errorExecutionFailed": "Execution failed. See the result detail under the draft.",
+    "myTitle": "My Drafts",
+    "myEmpty": "You have not created any action drafts yet.",
+    "byUser": "by {{name}}",
+    "status": {
+      "pending_approval": "Pending Approval",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "executed": "Executed",
+      "execution_failed": "Execution Failed",
+      "cancelled": "Cancelled"
     }
   }
 }

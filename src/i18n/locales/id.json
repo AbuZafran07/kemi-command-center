@@ -15,6 +15,7 @@
     "closeMenu": "Tutup menu",
     "sectionAgents": "Agen Anda",
     "requests": "Permohonan Akses",
+    "actions": "Aksi Sensitif",
     "approvals": "Kotak Persetujuan",
     "audit": "Catatan Audit",
     "briefing": "Daily Briefing"
@@ -53,6 +54,15 @@
   "install": {
     "button": "Pasang aplikasi",
     "hint": "Pasang KEMI di perangkat Anda"
+  },
+  "pwa": {
+    "updateAvailable": "Versi baru tersedia.",
+    "updateReload": "Muat ulang"
+  },
+  "offline": {
+    "title": "Anda sedang offline",
+    "subtitle": "KEMI butuh koneksi internet untuk memuat data. Kerangka aplikasi tetap terbuka; sambungkan kembali untuk melanjutkan.",
+    "retry": "Coba lagi"
   },
   "dashboard": {
     "title": "Dasbor",
@@ -220,6 +230,61 @@
       "AI_RATE_LIMITED": "Layanan AI sedang sibuk",
       "AI_UNAVAILABLE": "Layanan AI tidak tersedia",
       "AI_ERROR": "Gangguan layanan AI"
+    }
+  },
+  "actions": {
+    "pageTitle": "Aksi Sensitif",
+    "pageSubtitle": "Draf, persetujuan, dan eksekusi terkontrol untuk aksi yang mengubah data. AI tidak pernah mengeksekusi tanpa persetujuan manusia.",
+    "newDraft": "Buat Draf Baru",
+    "dialogTitle": "Draf Tindakan Baru",
+    "dialogDesc": "Draf ini hanya mencatat rencana tindakan. Tidak ada perubahan data sampai disetujui dan dieksekusi.",
+    "pickAction": "Jenis Aksi",
+    "pickActionPlaceholder": "Pilih jenis aksi sensitif",
+    "pickAgent": "Atas Nama Agen",
+    "pickAgentPlaceholder": "Pilih agen",
+    "title": "Judul Draf",
+    "employeeNo": "Nomor Karyawan",
+    "letterType": "Jenis Surat",
+    "reason": "Alasan",
+    "field": "Field yang Diubah",
+    "fieldPlaceholder": "Pilih field",
+    "fieldDivision": "Divisi",
+    "fieldPosition": "Posisi",
+    "fieldStatus": "Status",
+    "newValue": "Nilai Baru",
+    "poNo": "Nomor PO",
+    "submit": "Kirim Draf",
+    "submitting": "Mengirim...",
+    "created": "Draf tindakan berhasil dibuat.",
+    "errorForbiddenAgent": "Anda belum berwenang menggunakan agen ini.",
+    "errorInvalidPayload": "Data draf belum lengkap atau tidak valid.",
+    "errorGeneric": "Terjadi kesalahan. Silakan coba lagi.",
+    "pendingTitle": "Menunggu Keputusan Saya",
+    "pendingEmpty": "Tidak ada draf yang menunggu keputusan Anda.",
+    "notePlaceholder": "Catatan keputusan (opsional)",
+    "approve": "Setujui",
+    "reject": "Tolak",
+    "approved": "Draf disetujui.",
+    "rejected": "Draf ditolak.",
+    "notDecidable": "Draf tidak dapat Anda putuskan.",
+    "decideFailed": "Keputusan gagal disimpan.",
+    "executableTitle": "Siap Dieksekusi",
+    "executableEmpty": "Tidak ada draf yang siap dieksekusi.",
+    "execute": "Eksekusi",
+    "executed": "Tindakan berhasil dieksekusi.",
+    "errorSegregation": "Anda tidak dapat mengeksekusi draf yang Anda ajukan sendiri.",
+    "errorForbiddenExecute": "Anda tidak berwenang mengeksekusi draf ini.",
+    "errorExecutionFailed": "Eksekusi gagal. Lihat detail hasil di bawah draf.",
+    "myTitle": "Draf Saya",
+    "myEmpty": "Anda belum membuat draf tindakan.",
+    "byUser": "oleh {{name}}",
+    "status": {
+      "pending_approval": "Menunggu Persetujuan",
+      "approved": "Disetujui",
+      "rejected": "Ditolak",
+      "executed": "Dieksekusi",
+      "execution_failed": "Eksekusi Gagal",
+      "cancelled": "Dibatalkan"
     }
   }
 }
