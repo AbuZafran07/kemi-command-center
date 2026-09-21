@@ -338,6 +338,23 @@
     "errLastSuperAdmin": "Ditolak: harus selalu ada minimal satu super admin.",
     "errSelfRevoke": "Anda tidak dapat mencabut super admin dari diri sendiri.",
     "errForbidden": "Anda tidak berwenang melakukan tindakan ini.",
-    "errGeneric": "Terjadi kesalahan. Silakan coba lagi."
+    "errGeneric": "Terjadi kesalahan. Silakan coba lagi.",
+    "navAgents": "Agent",
+    "agentsNote": "Ubah nama, deskripsi, warna, foto, dan status aktif tiap agent. Perubahan langsung terlihat di Pusat Agen, sidebar, dan obrolan.",
+    "agentsEmpty": "Belum ada agent.",
+    "agentActive": "Aktif",
+    "agentInactive": "Nonaktif",
+    "agentEditTitle": "Ubah agent",
+    "agentName": "Nama agent",
+    "agentDescription": "Deskripsi",
+    "agentColor": "Warna (fallback inisial)",
+    "colorInvalid": "Gunakan format #RRGGBB.",
+    "photoChange": "Ganti foto",
+    "photoRemove": "Hapus foto",
+    "photoHint": "JPG, PNG, atau WEBP. Maks. 2MB.",
+    "photoInvalidType": "Format foto tidak didukung. Gunakan JPG, PNG, atau WEBP.",
+    "photoTooLarge": "Ukuran foto maksimal 2MB.",
+    "agentSaved": "Agent diperbarui.",
+    "agentToggled": "Status agent diperbarui."
   }
 }

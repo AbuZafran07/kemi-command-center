@@ -9,6 +9,7 @@ export type AgentCard = {
   role: string;
   division: string;
   avatar_color: string;
+  avatar_url: string | null;
   description: string;
 };
 
@@ -18,7 +19,7 @@ export const listMyAgents = createServerFn({ method: "GET" })
   .handler(async ({ context }): Promise<AgentCard[]> => {
     const { data: agents, error } = await context.supabase
       .from("agents")
-      .select("code, name, role, division, avatar_color, description")
+      .select("code, name, role, division, avatar_color, avatar_url, description")
       .eq("is_active", true)
       .order("code");
     if (error) throw new Error(error.message);
@@ -44,7 +45,7 @@ export const listAllAgents = createServerFn({ method: "GET" })
   .handler(async ({ context }): Promise<AgentCatalogItem[]> => {
     const { data: agents, error } = await context.supabase
       .from("agents")
-      .select("code, name, role, division, avatar_color, description, is_active")
+      .select("code, name, role, division, avatar_color, avatar_url, description, is_active")
       .order("code");
     if (error) throw new Error(error.message);
 
@@ -67,7 +68,7 @@ export const getAgentDetail = createServerFn({ method: "GET" })
     const code = data.code.toUpperCase();
     const { data: agent } = await context.supabase
       .from("agents")
-      .select("code, name, role, division, avatar_color, description, is_active")
+      .select("code, name, role, division, avatar_color, avatar_url, description, is_active")
       .eq("code", code)
       .maybeSingle();
 

@@ -135,7 +135,7 @@ function AgentChatPage() {
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
       <div className="flex min-h-[70vh] flex-col rounded-xl border border-border bg-card">
         <div className="flex items-center gap-3 border-b border-border px-4 py-3">
-          <AgentAvatar name={agent.name} color={agent.avatar_color} />
+          <AgentAvatar name={agent.name} color={agent.avatar_color} avatarUrl={agent.avatar_url} />
           <div className="min-w-0">
             <p className="truncate font-semibold">{agent.name}</p>
             <p className="truncate text-xs text-muted-foreground">

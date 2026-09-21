@@ -44,7 +44,11 @@ function ChatIndexPage() {
             <Link key={agent.code} to="/chat/$code" params={{ code: agent.code.toLowerCase() }}>
               <Card className="transition-colors hover:border-brand">
                 <CardContent className="flex items-center gap-3 py-4">
-                  <AgentAvatar name={agent.name} color={agent.avatar_color} />
+                  <AgentAvatar
+                    name={agent.name}
+                    color={agent.avatar_color}
+                    avatarUrl={agent.avatar_url}
+                  />
                   <div className="min-w-0">
                     <p className="truncate font-medium">{agent.name}</p>
                     <p className="truncate text-xs text-muted-foreground">{agent.role}</p>

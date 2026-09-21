@@ -118,7 +118,12 @@ export function AppSidebar() {
                             : {})}
                           className="flex items-center gap-2"
                         >
-                          <AgentAvatar name={agent.name} color={agent.avatar_color} size="sm" />
+                          <AgentAvatar
+                            name={agent.name}
+                            color={agent.avatar_color}
+                            avatarUrl={agent.avatar_url}
+                            size="sm"
+                          />
                           <span className="truncate">{agent.name}</span>
                         </Link>
                       </SidebarMenuButton>

@@ -35,6 +35,13 @@ function AdminLayout() {
         >
           {t("admin.navUsers")}
         </Link>
+        <Link
+          to="/admin/agents"
+          className="-mb-px border-b-2 border-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+          activeProps={{ className: "border-brand text-foreground" }}
+        >
+          {t("admin.navAgents")}
+        </Link>
       </nav>
       <Outlet />
     </>

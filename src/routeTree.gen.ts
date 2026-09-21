@@ -22,6 +22,7 @@ import { Route as AuthenticatedBriefingRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedRequestsRouteImport } from './routes/_authenticated/requests'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminAgentsRouteImport } from './routes/_authenticated/admin.agents'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
 import { Route as AuthenticatedChatCodeRouteImport } from './routes/_authenticated/chat.$code'
@@ -90,6 +91,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminAgentsRoute =
+  AuthenticatedAdminAgentsRouteImport.update({
+    id: '/agents',
+    path: '/agents',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -118,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/briefing': typeof AuthenticatedBriefingRoute
   '/requests': typeof AuthenticatedRequestsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/admin/agents': typeof AuthenticatedAdminAgentsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/chat/$code': typeof AuthenticatedChatCodeRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -134,6 +142,7 @@ export interface FileRoutesByTo {
   '/requests': typeof AuthenticatedRequestsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/': typeof AuthenticatedIndexRoute
+  '/admin/agents': typeof AuthenticatedAdminAgentsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/chat/$code': typeof AuthenticatedChatCodeRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -153,6 +162,7 @@ export interface FileRoutesById {
   '/_authenticated/requests': typeof AuthenticatedRequestsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/admin/agents': typeof AuthenticatedAdminAgentsRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/chat/$code': typeof AuthenticatedChatCodeRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -172,6 +182,7 @@ export interface FileRouteTypes {
     | '/briefing'
     | '/requests'
     | '/settings'
+    | '/admin/agents'
     | '/admin/users'
     | '/chat/$code'
     | '/admin/'
@@ -188,6 +199,7 @@ export interface FileRouteTypes {
     | '/requests'
     | '/settings'
     | '/'
+    | '/admin/agents'
     | '/admin/users'
     | '/chat/$code'
     | '/admin'
@@ -206,6 +218,7 @@ export interface FileRouteTypes {
     | '/_authenticated/requests'
     | '/_authenticated/settings'
     | '/_authenticated/'
+    | '/_authenticated/admin/agents'
     | '/_authenticated/admin/users'
     | '/_authenticated/chat/$code'
     | '/_authenticated/admin/'
@@ -311,6 +324,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/agents': {
+      id: '/_authenticated/admin/agents'
+      path: '/agents'
+      fullPath: '/admin/agents'
+      preLoaderRoute: typeof AuthenticatedAdminAgentsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/users': {
       id: '/_authenticated/admin/users'
       path: '/users'
@@ -336,11 +356,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAgentsRoute: typeof AuthenticatedAdminAgentsRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAgentsRoute: AuthenticatedAdminAgentsRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }

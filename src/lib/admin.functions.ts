@@ -181,3 +181,83 @@ export const adminToggleSuperAdmin = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true } as const;
   });
+
+export type AdminAgentRow = {
+  code: string;
+  name: string;
+  role: string;
+  division: string;
+  description: string;
+  avatar_color: string;
+  avatar_url: string | null;
+  is_active: boolean;
+};
+
+export const adminListAgents = createServerFn({ method: "GET" })
+  .middleware([requireSuperAdmin])
+  .handler(async ({ context }): Promise<AdminAgentRow[]> => {
+    const { data, error } = await context.supabase
+      .from("agents")
+      .select("code, name, role, division, description, avatar_color, avatar_url, is_active")
+      .order("division")
+      .order("code");
+    if (error) throw new Error(error.message);
+    return data ?? [];
+  });
+
+// Photos may only point at our own agent-avatars bucket (no arbitrary external images).
+const AGENT_PHOTO_PATH = "/storage/v1/object/public/agent-avatars/";
+
+/**
+ * Edit an agent. Only the fields provided are changed. The write goes through the
+ * caller's own client, so RLS (super_admin only), the immutable-code guard and the
+ * audit trigger all apply.
+ */
+export const adminUpdateAgent = createServerFn({ method: "POST" })
+  .middleware([requireSuperAdmin])
+  .inputValidator((input: unknown) =>
+    z
+      .object({
+        code: z.string().trim().min(1).max(20),
+        name: z.string().trim().min(1).max(100).optional(),
+        description: z.string().trim().max(500).optional(),
+        avatarColor: z
+          .string()
+          .regex(/^#[0-9A-Fa-f]{6}$/)
+          .optional(),
+        avatarUrl: z
+          .string()
+          .url()
+          .max(2000)
+          .refine((url) => url.includes(AGENT_PHOTO_PATH))
+          .nullable()
+          .optional(),
+        isActive: z.boolean().optional(),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const patch: {
+      name?: string;
+      description?: string;
+      avatar_color?: string;
+      avatar_url?: string | null;
+      is_active?: boolean;
+    } = {};
+    if (data.name !== undefined) patch.name = data.name;
+    if (data.description !== undefined) patch.description = data.description;
+    if (data.avatarColor !== undefined) patch.avatar_color = data.avatarColor;
+    if (data.avatarUrl !== undefined) patch.avatar_url = data.avatarUrl;
+    if (data.isActive !== undefined) patch.is_active = data.isActive;
+    if (Object.keys(patch).length === 0) throw new Error("NOTHING_TO_UPDATE");
+
+    const { data: updated, error } = await context.supabase
+      .from("agents")
+      .update(patch)
+      .eq("code", data.code.toUpperCase())
+      .select("code")
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!updated) throw new Error("NOT_FOUND");
+    return { ok: true } as const;
+  });

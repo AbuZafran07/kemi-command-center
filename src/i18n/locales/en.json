@@ -338,6 +338,23 @@
     "errLastSuperAdmin": "Rejected: there must always be at least one super admin.",
     "errSelfRevoke": "You cannot revoke your own super admin access.",
     "errForbidden": "You are not authorised to do this.",
-    "errGeneric": "Something went wrong. Please try again."
+    "errGeneric": "Something went wrong. Please try again.",
+    "navAgents": "Agents",
+    "agentsNote": "Edit each agent's name, description, colour, photo, and active status. Changes show immediately in Agent Center, the sidebar, and chat.",
+    "agentsEmpty": "No agents yet.",
+    "agentActive": "Active",
+    "agentInactive": "Inactive",
+    "agentEditTitle": "Edit agent",
+    "agentName": "Agent name",
+    "agentDescription": "Description",
+    "agentColor": "Colour (initials fallback)",
+    "colorInvalid": "Use the #RRGGBB format.",
+    "photoChange": "Change photo",
+    "photoRemove": "Remove photo",
+    "photoHint": "JPG, PNG, or WEBP. Max 2MB.",
+    "photoInvalidType": "Unsupported photo format. Use JPG, PNG, or WEBP.",
+    "photoTooLarge": "Photo must be 2MB or smaller.",
+    "agentSaved": "Agent updated.",
+    "agentToggled": "Agent status updated."
   }
 }

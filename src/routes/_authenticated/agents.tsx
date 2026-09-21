@@ -61,11 +61,17 @@ function AgentsPage() {
           {agents.map((agent) => (
             <Card key={agent.code} className="flex flex-col">
               <CardHeader className="flex flex-row items-start gap-3 pb-3">
-                <AgentAvatar name={agent.name} color={agent.avatar_color} />
+                <AgentAvatar
+                  name={agent.name}
+                  color={agent.avatar_color}
+                  avatarUrl={agent.avatar_url}
+                />
                 <div className="min-w-0">
                   <p className="truncate font-semibold">{agent.name}</p>
                   <p className="truncate text-xs text-muted-foreground">{agent.role}</p>
-                  <Badge variant="secondary" className="mt-1.5">{agent.division}</Badge>
+                  <Badge variant="secondary" className="mt-1.5">
+                    {agent.division}
+                  </Badge>
                 </div>
               </CardHeader>
               <CardContent className="flex flex-1 flex-col justify-between gap-4">
@@ -99,7 +105,12 @@ function AgentsPage() {
             <>
               <SheetHeader>
                 <div className="flex items-center gap-3">
-                  <AgentAvatar name={selected.name} color={selected.avatar_color} size="lg" />
+                  <AgentAvatar
+                    name={selected.name}
+                    color={selected.avatar_color}
+                    avatarUrl={selected.avatar_url}
+                    size="lg"
+                  />
                   <div>
                     <SheetTitle>{selected.name}</SheetTitle>
                     <SheetDescription>{selected.role}</SheetDescription>

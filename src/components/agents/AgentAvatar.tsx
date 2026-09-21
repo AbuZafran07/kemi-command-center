@@ -1,14 +1,34 @@
+import { useEffect, useState } from "react";
+
 export function AgentAvatar({
   name,
   color,
+  avatarUrl,
   size = "md",
 }: {
   name: string;
   color: string;
+  avatarUrl?: string | null | undefined;
   size?: "sm" | "md" | "lg";
 }) {
+  const [broken, setBroken] = useState(false);
+  useEffect(() => setBroken(false), [avatarUrl]);
+
+  const dimension =
+    size === "lg" ? "h-14 w-14 text-lg" : size === "sm" ? "h-8 w-8 text-xs" : "h-11 w-11 text-sm";
+
+  if (avatarUrl && !broken) {
+    return (
+      <img
+        src={avatarUrl}
+        alt={name}
+        onError={() => setBroken(true)}
+        className={`shrink-0 rounded-xl object-cover ${dimension}`}
+      />
+    );
+  }
+
   const initials = name.trim().slice(0, 2).toUpperCase();
-  const dimension = size === "lg" ? "h-14 w-14 text-lg" : size === "sm" ? "h-8 w-8 text-xs" : "h-11 w-11 text-sm";
   return (
     <span
       aria-hidden
