@@ -101,9 +101,9 @@ export type Database = {
           created_at: string
           decided_at: string | null
           decided_by: string | null
-          execution_result: Json | null
           executed_at: string | null
           executed_by: string | null
+          execution_result: Json | null
           id: string
           payload: Json
           requested_by: string
@@ -118,9 +118,9 @@ export type Database = {
           created_at?: string
           decided_at?: string | null
           decided_by?: string | null
-          execution_result?: Json | null
           executed_at?: string | null
           executed_by?: string | null
+          execution_result?: Json | null
           id?: string
           payload?: Json
           requested_by: string
@@ -135,9 +135,9 @@ export type Database = {
           created_at?: string
           decided_at?: string | null
           decided_by?: string | null
-          execution_result?: Json | null
           executed_at?: string | null
           executed_by?: string | null
+          execution_result?: Json | null
           id?: string
           payload?: Json
           requested_by?: string
