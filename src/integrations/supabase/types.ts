@@ -58,110 +58,6 @@ export type Database = {
           },
         ]
       }
-      action_approvals: {
-        Row: {
-          action_draft_id: string
-          approver_id: string
-          created_at: string
-          decision: string
-          id: string
-          note: string
-        }
-        Insert: {
-          action_draft_id: string
-          approver_id: string
-          created_at?: string
-          decision: string
-          id?: string
-          note?: string
-        }
-        Update: {
-          action_draft_id?: string
-          approver_id?: string
-          created_at?: string
-          decision?: string
-          id?: string
-          note?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "action_approvals_action_draft_id_fkey"
-            columns: ["action_draft_id"]
-            isOneToOne: false
-            referencedRelation: "action_drafts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      action_drafts: {
-        Row: {
-          action_code: string
-          agent_code: string | null
-          approver_role: Database["public"]["Enums"]["app_role"]
-          created_at: string
-          decided_at: string | null
-          decided_by: string | null
-          execution_result: Json | null
-          executed_at: string | null
-          executed_by: string | null
-          id: string
-          payload: Json
-          requested_by: string
-          status: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          action_code: string
-          agent_code?: string | null
-          approver_role: Database["public"]["Enums"]["app_role"]
-          created_at?: string
-          decided_at?: string | null
-          decided_by?: string | null
-          execution_result?: Json | null
-          executed_at?: string | null
-          executed_by?: string | null
-          id?: string
-          payload?: Json
-          requested_by: string
-          status?: string
-          title?: string
-          updated_at?: string
-        }
-        Update: {
-          action_code?: string
-          agent_code?: string | null
-          approver_role?: Database["public"]["Enums"]["app_role"]
-          created_at?: string
-          decided_at?: string | null
-          decided_by?: string | null
-          execution_result?: Json | null
-          executed_at?: string | null
-          executed_by?: string | null
-          id?: string
-          payload?: Json
-          requested_by?: string
-          status?: string
-          title?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "action_drafts_action_code_fkey"
-            columns: ["action_code"]
-            isOneToOne: false
-            referencedRelation: "sensitive_actions"
-            referencedColumns: ["code"]
-          },
-          {
-            foreignKeyName: "action_drafts_agent_code_fkey"
-            columns: ["agent_code"]
-            isOneToOne: false
-            referencedRelation: "agents"
-            referencedColumns: ["code"]
-          },
-        ]
-      }
       agent_permissions: {
         Row: {
           agent_code: string
@@ -720,44 +616,6 @@ export type Database = {
         }
         Relationships: []
       }
-      disciplinary_letters: {
-        Row: {
-          action_draft_id: string
-          employee_no: string
-          id: string
-          issued_at: string
-          issued_by: string
-          letter_type: string
-          reason: string
-        }
-        Insert: {
-          action_draft_id: string
-          employee_no: string
-          id?: string
-          issued_at?: string
-          issued_by: string
-          letter_type: string
-          reason?: string
-        }
-        Update: {
-          action_draft_id?: string
-          employee_no?: string
-          id?: string
-          issued_at?: string
-          issued_by?: string
-          letter_type?: string
-          reason?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "disciplinary_letters_action_draft_id_fkey"
-            columns: ["action_draft_id"]
-            isOneToOne: false
-            referencedRelation: "action_drafts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       messages: {
         Row: {
           content: string
@@ -801,7 +659,6 @@ export type Database = {
       }
       profiles: {
         Row: {
-          avatar_url: string | null
           created_at: string
           division: string
           full_name: string
@@ -810,7 +667,6 @@ export type Database = {
           theme_pref: string
         }
         Insert: {
-          avatar_url?: string | null
           created_at?: string
           division?: string
           full_name?: string
@@ -819,43 +675,12 @@ export type Database = {
           theme_pref?: string
         }
         Update: {
-          avatar_url?: string | null
           created_at?: string
           division?: string
           full_name?: string
           id?: string
           language_pref?: string
           theme_pref?: string
-        }
-        Relationships: []
-      }
-      sensitive_actions: {
-        Row: {
-          approver_role: Database["public"]["Enums"]["app_role"]
-          code: string
-          created_at: string
-          description: string
-          is_active: boolean
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          approver_role?: Database["public"]["Enums"]["app_role"]
-          code: string
-          created_at?: string
-          description?: string
-          is_active?: boolean
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          approver_role?: Database["public"]["Enums"]["app_role"]
-          code?: string
-          created_at?: string
-          description?: string
-          is_active?: boolean
-          name?: string
-          updated_at?: string
         }
         Relationships: []
       }
