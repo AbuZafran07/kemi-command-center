@@ -31,6 +31,33 @@ export const Route = createFileRoute("/_authenticated/audit")({
 
 const ALL = "__all__";
 
+type Detail = Record<string, unknown>;
+
+const show = (value: unknown) =>
+  value === null || value === undefined
+    ? "—"
+    : typeof value === "object"
+      ? JSON.stringify(value)
+      : String(value);
+
+/** "field: a → b" for objects, "a → b" for plain values; only what actually changed. */
+function describeChange(before: unknown, after: unknown): string {
+  if (
+    before &&
+    after &&
+    typeof before === "object" &&
+    typeof after === "object" &&
+    !Array.isArray(before) &&
+    !Array.isArray(after)
+  ) {
+    const b = before as Detail;
+    const a = after as Detail;
+    const changed = Object.keys(a).filter((key) => show(b[key]) !== show(a[key]));
+    return changed.map((key) => `${key}: ${show(b[key])} → ${show(a[key])}`).join("; ");
+  }
+  return `${show(before)} → ${show(after)}`;
+}
+
 function AuditPage() {
   const { t, i18n } = useTranslation();
   const fetchAudit = useServerFn(listAuditLog);
@@ -120,6 +147,7 @@ function AuditPage() {
                     <th className="px-4 py-2">{t("audit.colAgent")}</th>
                     <th className="px-4 py-2">{t("audit.colAction")}</th>
                     <th className="px-4 py-2">{t("audit.colScope")}</th>
+                    <th className="px-4 py-2">{t("audit.colDetail")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -134,6 +162,21 @@ function AuditPage() {
                         <Badge variant="secondary">{row.action}</Badge>
                       </td>
                       <td className="px-4 py-2 text-muted-foreground">{row.data_scope || "—"}</td>
+                      <td className="px-4 py-2 text-xs">
+                        {row.target_label ? (
+                          <p>
+                            {t("audit.target")}: {row.target_label}
+                          </p>
+                        ) : null}
+                        {"before" in row.detail || "after" in row.detail ? (
+                          <p className="text-muted-foreground">
+                            {describeChange(row.detail["before"], row.detail["after"])}
+                          </p>
+                        ) : null}
+                        {!row.target_label && !("before" in row.detail || "after" in row.detail)
+                          ? "—"
+                          : null}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

@@ -10,6 +10,7 @@ import {
   ScrollText,
   Settings,
   ShieldCheck,
+  UserCog,
   Sparkles,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -45,7 +46,7 @@ const CHAT_ENABLED = ["ARCA", "JOKO", "WAWAN", "ALDI", "SALLY", "PIA", "PURI"];
 
 export function AppSidebar() {
   const { t } = useTranslation();
-  const { user, role } = useAuth();
+  const { user, role, isSuperAdmin } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const fetchAgents = useServerFn(listMyAgents);
 
@@ -67,6 +68,7 @@ export function AppSidebar() {
     ...(role && AUDIT_ROLES.includes(role)
       ? [{ key: "audit", url: "/audit", icon: ScrollText } as const]
       : []),
+    ...(isSuperAdmin ? [{ key: "admin", url: "/admin", icon: UserCog } as const] : []),
     ...items.filter((item) => item.key === "settings"),
   ];
 
@@ -79,7 +81,12 @@ export function AppSidebar() {
             <SidebarMenu>
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.key}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={
+                      item.key === "admin" ? pathname.startsWith("/admin") : pathname === item.url
+                    }
+                  >
                     <Link to={item.url} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4" />
                       <span>{t(`nav.${item.key}`)}</span>

@@ -18,7 +18,8 @@
     "actions": "Sensitive Actions",
     "approvals": "Approval Inbox",
     "audit": "Audit Log",
-    "briefing": "Daily Briefing"
+    "briefing": "Daily Briefing",
+    "admin": "Admin"
   },
   "header": {
     "language": "Language",
@@ -193,7 +194,9 @@
     "colUser": "User",
     "colAgent": "Agent",
     "colAction": "Action",
-    "colScope": "Data scope"
+    "colScope": "Data scope",
+    "colDetail": "Detail",
+    "target": "Target"
   },
   "briefing": {
     "title": "Daily Briefing",
@@ -302,5 +305,39 @@
       "execution_failed": "Execution Failed",
       "cancelled": "Cancelled"
     }
+  },
+  "admin": {
+    "title": "Admin",
+    "subtitle": "Manage users and roles. Only super admins can access this page.",
+    "navUsers": "Users",
+    "sessionNote": "Organisational role changes affect a user's data access from their next session/refresh, and remain subject to the existing agent permissions.",
+    "empty": "No users yet.",
+    "colUser": "User",
+    "colDivision": "Division",
+    "colRole": "Organisational role",
+    "colSuperAdmin": "Super admin",
+    "colActions": "Actions",
+    "you": "(You)",
+    "edit": "Edit",
+    "editTitle": "Edit user profile",
+    "fullName": "Full name",
+    "division": "Division",
+    "save": "Save",
+    "saving": "Saving...",
+    "profileSaved": "User profile updated.",
+    "roleConfirmTitle": "Change organisational role?",
+    "roleConfirmDesc": "{{name}}'s role will change from {{from}} to {{to}}. This affects that user's data access.",
+    "roleChanged": "Organisational role updated.",
+    "grantTitle": "Grant super admin access?",
+    "grantDesc": "{{name}} will be able to change the profile and role of every user. This is recorded in the audit log.",
+    "revokeTitle": "Revoke super admin access?",
+    "revokeDesc": "{{name}} will no longer be able to manage users and roles.",
+    "superAdminChanged": "Super admin access updated.",
+    "cancel": "Cancel",
+    "confirm": "Yes, continue",
+    "errLastSuperAdmin": "Rejected: there must always be at least one super admin.",
+    "errSelfRevoke": "You cannot revoke your own super admin access.",
+    "errForbidden": "You are not authorised to do this.",
+    "errGeneric": "Something went wrong. Please try again."
   }
 }

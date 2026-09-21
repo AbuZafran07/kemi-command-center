@@ -40,6 +40,7 @@ type AuthState = {
   user: User | null;
   profile: Profile | null;
   role: AppRole | null;
+  isSuperAdmin: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -67,6 +68,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [role, setRole] = useState<AppRole | null>(null);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const userIdRef = useRef<string | null>(null);
 
@@ -103,6 +105,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
     if (!currentUser) {
       setProfile(null);
       setRole(null);
+      setIsSuperAdmin(false);
       return;
     }
 
@@ -116,7 +119,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
     ]);
 
     setProfile((profileRow as Profile | null) ?? null);
-    setRole((roleRows?.[0]?.role as AppRole | undefined) ?? null);
+    // super_admin is an ADDITIONAL row; the organisational role is whichever row is not it.
+    const roles = (roleRows ?? []).map((row) => row.role as string);
+    setRole((roles.find((r) => r !== "super_admin") as AppRole | undefined) ?? null);
+    setIsSuperAdmin(roles.includes("super_admin"));
 
     if (profileRow) {
       const pref = profileRow as Profile;
@@ -145,6 +151,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
       if (event === "SIGNED_OUT") {
         setProfile(null);
         setRole(null);
+        setIsSuperAdmin(false);
       } else if (nextUser && nextUser.id !== userIdRef.current) {
         void loadProfile(nextUser);
       }
@@ -198,6 +205,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
     setUser(null);
     setProfile(null);
     setRole(null);
+    setIsSuperAdmin(false);
     userIdRef.current = null;
     await router.navigate({ to: "/auth", replace: true });
   }, [router]);
@@ -210,7 +218,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <I18nextProvider i18n={i18n}>
       <PreferencesContext.Provider value={{ theme, setTheme, toggleTheme, language, setLanguage }}>
-        <AuthContext.Provider value={{ user, profile, role, loading, signOut, refreshProfile }}>
+        <AuthContext.Provider
+          value={{ user, profile, role, isSuperAdmin, loading, signOut, refreshProfile }}
+        >
           {children}
         </AuthContext.Provider>
       </PreferencesContext.Provider>

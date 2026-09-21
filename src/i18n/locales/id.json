@@ -18,7 +18,8 @@
     "actions": "Aksi Sensitif",
     "approvals": "Kotak Persetujuan",
     "audit": "Catatan Audit",
-    "briefing": "Daily Briefing"
+    "briefing": "Daily Briefing",
+    "admin": "Admin"
   },
   "header": {
     "language": "Bahasa",
@@ -193,7 +194,9 @@
     "colUser": "Pengguna",
     "colAgent": "Agen",
     "colAction": "Aksi",
-    "colScope": "Lingkup data"
+    "colScope": "Lingkup data",
+    "colDetail": "Detail",
+    "target": "Target"
   },
   "briefing": {
     "title": "Daily Briefing",
@@ -302,5 +305,39 @@
       "execution_failed": "Eksekusi Gagal",
       "cancelled": "Dibatalkan"
     }
+  },
+  "admin": {
+    "title": "Admin",
+    "subtitle": "Kelola pengguna dan role. Hanya super admin yang dapat mengakses halaman ini.",
+    "navUsers": "Pengguna",
+    "sessionNote": "Perubahan role organisasi memengaruhi akses data pengguna pada sesi/muat ulang berikutnya, dan tetap tunduk pada izin agen yang berlaku.",
+    "empty": "Belum ada pengguna.",
+    "colUser": "Pengguna",
+    "colDivision": "Divisi",
+    "colRole": "Role organisasi",
+    "colSuperAdmin": "Super admin",
+    "colActions": "Aksi",
+    "you": "(Anda)",
+    "edit": "Ubah",
+    "editTitle": "Ubah profil pengguna",
+    "fullName": "Nama lengkap",
+    "division": "Divisi",
+    "save": "Simpan",
+    "saving": "Menyimpan...",
+    "profileSaved": "Profil pengguna diperbarui.",
+    "roleConfirmTitle": "Ubah role organisasi?",
+    "roleConfirmDesc": "Role {{name}} akan diubah dari {{from}} menjadi {{to}}. Ini memengaruhi akses data pengguna tersebut.",
+    "roleChanged": "Role organisasi diperbarui.",
+    "grantTitle": "Beri akses super admin?",
+    "grantDesc": "{{name}} akan dapat mengubah profil dan role semua pengguna. Perubahan ini tercatat di audit log.",
+    "revokeTitle": "Cabut akses super admin?",
+    "revokeDesc": "{{name}} tidak akan lagi dapat mengelola pengguna dan role.",
+    "superAdminChanged": "Akses super admin diperbarui.",
+    "cancel": "Batal",
+    "confirm": "Ya, lanjutkan",
+    "errLastSuperAdmin": "Ditolak: harus selalu ada minimal satu super admin.",
+    "errSelfRevoke": "Anda tidak dapat mencabut super admin dari diri sendiri.",
+    "errForbidden": "Anda tidak berwenang melakukan tindakan ini.",
+    "errGeneric": "Terjadi kesalahan. Silakan coba lagi."
   }
 }

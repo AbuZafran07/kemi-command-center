@@ -62,13 +62,9 @@ async function loadAdmin() {
 }
 
 async function namesFor(userIds: string[]): Promise<Record<string, string>> {
-  const unique = Array.from(new Set(userIds.filter(Boolean)));
-  if (unique.length === 0) return {};
-  const admin = await loadAdmin();
-  const { data } = await admin.from("profiles").select("id, full_name").in("id", unique);
-  const map: Record<string, string> = {};
-  for (const row of data ?? []) map[row.id] = row.full_name || "—";
-  return map;
+  const { resolveUsers } = await import("@/lib/user-directory.server");
+  const users = await resolveUsers(userIds);
+  return Object.fromEntries(Object.entries(users).map(([id, user]) => [id, user.name]));
 }
 
 async function writeAudit(input: {

@@ -80,6 +80,11 @@ function ApprovalsPage() {
             <CardHeader className="pb-3">
               <CardTitle className="flex flex-wrap items-center gap-2 text-base">
                 {request.requester_name}
+                {request.requester_email ? (
+                  <span className="text-xs font-normal text-muted-foreground">
+                    {request.requester_email}
+                  </span>
+                ) : null}
                 <Badge variant="secondary">{request.agent_name}</Badge>
                 <span className="text-xs font-normal text-muted-foreground">
                   {new Date(request.created_at).toLocaleString(i18n.language)}
@@ -105,18 +110,14 @@ function ApprovalsPage() {
                 <Button
                   variant="brand"
                   disabled={mutation.isPending}
-                  onClick={() =>
-                    mutation.mutate({ requestId: request.id, decision: "approved" })
-                  }
+                  onClick={() => mutation.mutate({ requestId: request.id, decision: "approved" })}
                 >
                   {t("approvals.approve")}
                 </Button>
                 <Button
                   variant="outline"
                   disabled={mutation.isPending}
-                  onClick={() =>
-                    mutation.mutate({ requestId: request.id, decision: "rejected" })
-                  }
+                  onClick={() => mutation.mutate({ requestId: request.id, decision: "rejected" })}
                 >
                   {t("approvals.reject")}
                 </Button>

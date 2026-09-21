@@ -5,6 +5,8 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type AppRoleName = "CEO" | "Director" | "Manager" | "Supervisor" | "Staff";
 
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+
 export type AccessRequestRow = {
   id: string;
   agent_code: string;
@@ -16,6 +18,7 @@ export type AccessRequestRow = {
   decided_at: string | null;
   requester_id: string;
   requester_name: string;
+  requester_email: string;
 };
 
 export type AuditRow = {
@@ -26,6 +29,8 @@ export type AuditRow = {
   data_scope: string;
   user_id: string | null;
   user_name: string;
+  target_label: string;
+  detail: Record<string, JsonValue>;
 };
 
 /** Hierarchy routing: who must approve a request coming from this role. */
@@ -40,14 +45,9 @@ async function loadAdmin() {
   return supabaseAdmin;
 }
 
-async function namesFor(userIds: string[]): Promise<Record<string, string>> {
-  const unique = Array.from(new Set(userIds.filter(Boolean)));
-  if (unique.length === 0) return {};
-  const admin = await loadAdmin();
-  const { data } = await admin.from("profiles").select("id, full_name").in("id", unique);
-  const map: Record<string, string> = {};
-  for (const row of data ?? []) map[row.id] = row.full_name || "—";
-  return map;
+async function namesFor(userIds: string[]) {
+  const { resolveUsers } = await import("@/lib/user-directory.server");
+  return resolveUsers(userIds);
 }
 
 async function writeAudit(input: {
@@ -71,9 +71,7 @@ async function writeAudit(input: {
 export const requestAgentAccess = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
-    z
-      .object({ agentCode: z.string().min(1), purpose: z.string().min(5).max(500) })
-      .parse(input),
+    z.object({ agentCode: z.string().min(1), purpose: z.string().min(5).max(500) }).parse(input),
   )
   .handler(async ({ data, context }) => {
     const agentCode = data.agentCode.toUpperCase();
@@ -95,7 +93,8 @@ export const requestAgentAccess = createServerFn({ method: "POST" })
       .from("user_roles")
       .select("role")
       .eq("user_id", context.userId);
-    const approverRole = approverRoleFor(roleRows?.[0]?.role);
+    const orgRole = (roleRows ?? []).map((row) => row.role).find((role) => role !== "super_admin");
+    const approverRole = approverRoleFor(orgRole);
 
     const { error } = await context.supabase.from("access_requests").insert({
       user_id: context.userId,
@@ -126,7 +125,9 @@ export const listMyAccessRequests = createServerFn({ method: "GET" })
   .handler(async ({ context }): Promise<AccessRequestRow[]> => {
     const { data, error } = await context.supabase
       .from("access_requests")
-      .select("id, agent_code, purpose, status, approver_role, created_at, decided_at, user_id, agents(name)")
+      .select(
+        "id, agent_code, purpose, status, approver_role, created_at, decided_at, user_id, agents(name)",
+      )
       .eq("user_id", context.userId)
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
@@ -142,6 +143,7 @@ export const listMyAccessRequests = createServerFn({ method: "GET" })
       decided_at: row.decided_at,
       requester_id: row.user_id,
       requester_name: "",
+      requester_email: "",
     }));
   });
 
@@ -151,7 +153,9 @@ export const listPendingApprovals = createServerFn({ method: "GET" })
   .handler(async ({ context }): Promise<AccessRequestRow[]> => {
     const { data, error } = await context.supabase
       .from("access_requests")
-      .select("id, agent_code, purpose, status, approver_role, created_at, decided_at, user_id, agents(name)")
+      .select(
+        "id, agent_code, purpose, status, approver_role, created_at, decided_at, user_id, agents(name)",
+      )
       .eq("status", "pending")
       .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
@@ -169,7 +173,8 @@ export const listPendingApprovals = createServerFn({ method: "GET" })
       created_at: row.created_at,
       decided_at: row.decided_at,
       requester_id: row.user_id,
-      requester_name: names[row.user_id] ?? "—",
+      requester_name: names[row.user_id]?.name ?? "—",
+      requester_email: names[row.user_id]?.email ?? "",
     }));
   });
 
@@ -247,7 +252,7 @@ export const listAuditLog = createServerFn({ method: "GET" })
   .handler(async ({ data, context }): Promise<AuditRow[]> => {
     let query = context.supabase
       .from("audit_log")
-      .select("id, created_at, action, agent_code, data_scope, user_id")
+      .select("id, created_at, action, agent_code, data_scope, user_id, detail")
       .order("created_at", { ascending: false })
       .limit(data.limit);
 
@@ -258,15 +263,37 @@ export const listAuditLog = createServerFn({ method: "GET" })
     const { data: rows, error } = await query;
     if (error) throw new Error(error.message);
 
-    const names = await namesFor((rows ?? []).map((row) => row.user_id ?? ""));
+    // Only the who/what/before->after facts are exposed, never the raw detail blob.
+    const summarise = (detail: unknown) => {
+      const source = (detail ?? {}) as Record<string, JsonValue>;
+      const picked: Record<string, JsonValue> = {};
+      for (const key of ["target_user_id", "before", "after"]) {
+        const value = source[key];
+        if (value !== undefined) picked[key] = value;
+      }
+      return picked;
+    };
+    const summaries = (rows ?? []).map((row) => summarise(row.detail));
+    const targetIds = summaries.map((detail) => String(detail["target_user_id"] ?? ""));
+    const names = await namesFor([...(rows ?? []).map((row) => row.user_id ?? ""), ...targetIds]);
 
-    return (rows ?? []).map((row) => ({
-      id: row.id,
-      created_at: row.created_at,
-      action: row.action,
-      agent_code: row.agent_code,
-      data_scope: row.data_scope,
-      user_id: row.user_id,
-      user_name: row.user_id ? (names[row.user_id] ?? "—") : "—",
-    }));
+    return (rows ?? []).map((row, index) => {
+      const detail = summaries[index] ?? {};
+      const target = names[String(detail["target_user_id"] ?? "")];
+      return {
+        id: row.id,
+        created_at: row.created_at,
+        action: row.action,
+        agent_code: row.agent_code,
+        data_scope: row.data_scope,
+        user_id: row.user_id,
+        user_name: row.user_id ? (names[row.user_id]?.name ?? "—") : "—",
+        target_label: target
+          ? target.email
+            ? `${target.name} (${target.email})`
+            : target.name
+          : "",
+        detail,
+      };
+    });
   });
