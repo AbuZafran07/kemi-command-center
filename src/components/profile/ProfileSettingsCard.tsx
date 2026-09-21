@@ -39,7 +39,12 @@ export function ProfileSettingsCard() {
           .from("user-avatars")
           .upload(path, pendingFile, { upsert: true, contentType: pendingFile.type });
         if (uploadError) throw new Error(uploadError.message);
-        avatarUrl = supabase.storage.from("user-avatars").getPublicUrl(path).data.publicUrl;
+        // Private bucket: the avatar is served through a long-lived signed URL.
+        const { data: signed, error: signError } = await supabase.storage
+          .from("user-avatars")
+          .createSignedUrl(path, 60 * 60 * 24 * 365);
+        if (signError || !signed?.signedUrl) throw new Error(signError?.message ?? "SIGN_FAILED");
+        avatarUrl = signed.signedUrl;
       }
 
       await submit({ data: { fullName: fullName.trim(), ...(avatarUrl ? { avatarUrl } : {}) } });
