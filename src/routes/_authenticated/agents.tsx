@@ -77,18 +77,12 @@ function AgentsPage() {
               <CardContent className="flex flex-1 flex-col justify-between gap-4">
                 <p className="text-sm text-muted-foreground">{agent.description}</p>
                 <div className="flex flex-wrap gap-2">
-                  {CHAT_ENABLED.includes(agent.code) ? (
-                    <Button asChild size="sm" variant="brand">
-                      <Link to="/chat/$code" params={{ code: agent.code.toLowerCase() }}>
-                        <MessagesSquare className="mr-1.5 h-4 w-4" />
-                        {t("agents.chat")}
-                      </Link>
-                    </Button>
-                  ) : (
-                    <Button size="sm" variant="brand" disabled>
-                      {t("common.soon")}
-                    </Button>
-                  )}
+                  <Button asChild size="sm" variant="brand">
+                    <Link to="/chat/$code" params={{ code: agent.code.toLowerCase() }}>
+                      <MessagesSquare className="mr-1.5 h-4 w-4" />
+                      {t("agents.chat")}
+                    </Link>
+                  </Button>
                   <Button size="sm" variant="outline" onClick={() => setSelected(agent)}>
                     {t("agents.profile")}
                   </Button>
