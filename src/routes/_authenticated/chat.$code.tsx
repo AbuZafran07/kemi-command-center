@@ -34,7 +34,6 @@ export const Route = createFileRoute("/_authenticated/chat/$code")({
   component: AgentChatPage,
 });
 
-const CHAT_ENABLED = ["JOKO", "WAWAN", "ALDI"];
 
 function AgentChatPage() {
   const { code } = Route.useParams();

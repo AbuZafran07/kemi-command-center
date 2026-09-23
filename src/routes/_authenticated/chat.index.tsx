@@ -48,7 +48,9 @@ function ChatIndexPage() {
                   />
                   <div className="min-w-0">
                     <p className="truncate font-medium">{agent.name}</p>
-                    <p className="truncate text-xs text-muted-foreground">{agent.role}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {agent.role} · {agent.division}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
