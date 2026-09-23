@@ -121,7 +121,11 @@ function extract(
       const summary = obj(payload["summary"]);
       return summary ? [{ dataset: "summary", ...summary }, ...list] : list;
     }
-    return null; // absensi belum diekspor oleh HRIS
+    if (dataset === "attendance") {
+      const list = rows(payload["attendance"]);
+      return list.length > 0 ? list : null;
+    }
+    return null;
   }
 
   if (source === "sales" && dataset === "sales") {
@@ -149,7 +153,11 @@ function extract(
       const head = summary && obj(summary["ap"]) ? [{ dataset: "summary", ...obj(summary["ap"])! }] : [];
       return head.length || list.length ? [...head, ...list] : null;
     }
-    return null; // posisi kas tidak diekspor AP/AR Nexus
+    if (dataset === "cash_positions") {
+      const list = rows(payload["cash_positions"]);
+      return list.length > 0 ? list : null;
+    }
+    return null;
   }
 
   if (source === "wms") {
