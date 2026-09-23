@@ -20,6 +20,8 @@ export type AgentDataset = {
   records: Record<string, unknown>[];
   /** Short description of the scope of the dataset. */
   scope: string;
+  /** True when the rows came from the real source app, false for demo seed. */
+  isLive?: boolean;
 };
 
 type AdminClient = Awaited<
@@ -34,6 +36,29 @@ async function getDataAsOf(admin: AdminClient, code: string): Promise<string> {
     .maybeSingle();
   return data?.data_as_of ?? "";
 }
+
+/**
+ * Try the real source app first (Opsi A endpoint), fall back to the demo seed
+ * when the endpoint is not configured or unreachable. Never invent data.
+ */
+async function withLiveSource(
+  source: import("@/lib/external-sources.server").ExternalSourceKey,
+  dataset: string,
+  fallback: () => Promise<AgentDataset>,
+  scope: string,
+): Promise<AgentDataset> {
+  const { fetchExternalDataset } = await import("@/lib/external-sources.server");
+  const live = await fetchExternalDataset(source, dataset);
+  if (!live) return fallback();
+  return {
+    sourceCodes: [`${source.toUpperCase()}_LIVE`],
+    dataAsOf: live.dataAsOf,
+    records: live.records,
+    scope,
+    isLive: true,
+  };
+}
+
 
 /** JOKO — HR generalist: employee master data (demo). */
 async function fetchHrDataset(admin: AdminClient): Promise<AgentDataset> {
