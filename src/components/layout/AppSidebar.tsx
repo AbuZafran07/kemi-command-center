@@ -45,7 +45,6 @@ const APPROVER_ROLES = ["CEO", "Director", "Manager"];
 const AUDIT_ROLES = ["CEO", "Director"];
 const BRIEFING_ROLES = ["CEO", "Director"];
 
-const CHAT_ENABLED = ["ARCA", "JOKO", "WAWAN", "ALDI", "SALLY", "PIA", "PURI"];
 
 // The active accent bar/tint layers on top of the shadcn sidebar defaults.
 const ACTIVE_ACCENT =
@@ -135,7 +134,7 @@ export function AppSidebar() {
                   </>
                 ) : (
                   agents.map((agent) => {
-                    const href = CHAT_ENABLED.includes(agent.code) ? "/chat/$code" : "/agents";
+                    const href = "/chat/$code";
                     return (
                       <SidebarMenuItem key={agent.code}>
                         <SidebarMenuButton

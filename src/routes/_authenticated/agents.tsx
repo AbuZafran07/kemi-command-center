@@ -31,7 +31,6 @@ export const Route = createFileRoute("/_authenticated/agents")({
   component: AgentsPage,
 });
 
-const CHAT_ENABLED = ["JOKO", "WAWAN", "ALDI"];
 
 function AgentsPage() {
   const { t } = useTranslation();
