@@ -79,6 +79,8 @@ function AdminUsersPage() {
   const updateProfile = useServerFn(adminUpdateUserProfile);
   const setOrgRole = useServerFn(adminSetUserOrgRole);
   const toggleSuperAdmin = useServerFn(adminToggleSuperAdmin);
+  const createUser = useServerFn(adminCreateUser);
+  const deleteUser = useServerFn(adminDeleteUser);
 
   const usersQuery = useQuery({ queryKey: ["admin-users"], queryFn: () => fetchUsers() });
   const users = usersQuery.data ?? [];
