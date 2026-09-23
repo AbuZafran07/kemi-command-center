@@ -34,7 +34,6 @@ export const Route = createFileRoute("/_authenticated/chat/$code")({
   component: AgentChatPage,
 });
 
-const CHAT_ENABLED = ["JOKO", "WAWAN", "ALDI"];
 
 function AgentChatPage() {
   const { code } = Route.useParams();
@@ -95,7 +94,7 @@ function AgentChatPage() {
     );
   }
 
-  if (!agent || !allowed || !CHAT_ENABLED.includes(agentCode)) {
+  if (!agent || !allowed) {
     return (
       <Card className="mx-auto max-w-lg">
         <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
@@ -103,11 +102,7 @@ function AgentChatPage() {
           <div>
             <p className="text-lg font-semibold">{t("chat.deniedTitle")}</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {!agent
-                ? t("chat.deniedUnknown")
-                : !allowed
-                  ? t("chat.deniedBody", { agent: agent.name })
-                  : t("chat.notEnabled", { agent: agent.name })}
+              {!agent ? t("chat.deniedUnknown") : t("chat.deniedBody", { agent: agent.name })}
             </p>
           </div>
           <div className="flex gap-2">
@@ -171,9 +166,18 @@ function AgentChatPage() {
                 {message.role === "user" ? (
                   message.content
                 ) : (
+                  <>
+                  <div className="mb-1.5 flex items-center gap-2">
+                    <AgentAvatar name={agent.name} avatarUrl={agent.avatar_url} size="sm" />
+                    <span className="text-xs font-medium">{agent.name}</span>
+                    <Badge variant="secondary" className="text-[10px]">
+                      {agent.division}
+                    </Badge>
+                  </div>
                   <div className="space-y-2 [&_a]:underline [&_li]:ml-4 [&_li]:list-disc [&_strong]:font-semibold [&_table]:block [&_table]:w-full [&_table]:overflow-x-auto [&_table]:text-xs [&_td]:border [&_td]:border-border [&_td]:px-2 [&_td]:py-1 [&_th]:border [&_th]:border-border [&_th]:px-2 [&_th]:py-1 [&_th]:text-left">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
                   </div>
+                  </>
                 )}
               </div>
             </div>

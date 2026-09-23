@@ -19,13 +19,11 @@ export const Route = createFileRoute("/_authenticated/chat/")({
   component: ChatIndexPage,
 });
 
-const CHAT_ENABLED = ["JOKO", "WAWAN", "ALDI"];
-
 function ChatIndexPage() {
   const { t } = useTranslation();
   const fetchAgents = useServerFn(listMyAgents);
   const { data, isLoading } = useQuery({ queryKey: ["my-agents"], queryFn: () => fetchAgents() });
-  const agents = (data ?? []).filter((a) => CHAT_ENABLED.includes(a.code));
+  const agents = data ?? [];
 
   return (
     <>
@@ -50,7 +48,9 @@ function ChatIndexPage() {
                   />
                   <div className="min-w-0">
                     <p className="truncate font-medium">{agent.name}</p>
-                    <p className="truncate text-xs text-muted-foreground">{agent.role}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {agent.role} · {agent.division}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
