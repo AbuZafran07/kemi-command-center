@@ -127,7 +127,13 @@ function AdminAgentsPage() {
           .from("agent-avatars")
           .upload(path, pendingFile, { upsert: true, contentType: pendingFile.type });
         if (uploadError) throw new Error(uploadError.message);
-        avatarUrl = supabase.storage.from("agent-avatars").getPublicUrl(path).data.publicUrl;
+        // agent-avatars is a private bucket (same as user-avatars): serve the
+        // photo through a long-lived signed URL rather than a public one.
+        const { data: signed, error: signError } = await supabase.storage
+          .from("agent-avatars")
+          .createSignedUrl(path, 60 * 60 * 24 * 365);
+        if (signError || !signed?.signedUrl) throw new Error(signError?.message ?? "SIGN_FAILED");
+        avatarUrl = signed.signedUrl;
       } else if (removePhoto) {
         avatarUrl = null;
       }

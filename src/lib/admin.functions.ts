@@ -193,10 +193,14 @@ export type AdminAgentRow = {
   is_active: boolean;
 };
 
+// agents_select_authenticated only shows inactive agents to CEO/Director; a
+// super_admin whose org role is e.g. Staff must still see every agent here, so
+// this reads through the service-role client (already gated by requireSuperAdmin).
 export const adminListAgents = createServerFn({ method: "GET" })
   .middleware([requireSuperAdmin])
-  .handler(async ({ context }): Promise<AdminAgentRow[]> => {
-    const { data, error } = await context.supabase
+  .handler(async (): Promise<AdminAgentRow[]> => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin
       .from("agents")
       .select("code, name, role, division, description, avatar_color, avatar_url, is_active")
       .order("division")
@@ -206,7 +210,9 @@ export const adminListAgents = createServerFn({ method: "GET" })
   });
 
 // Photos may only point at our own agent-avatars bucket (no arbitrary external images).
-const AGENT_PHOTO_PATH = "/storage/v1/object/public/agent-avatars/";
+// Accepts both a public URL and a signed URL (the bucket is private, so uploads use
+// createSignedUrl -- see admin.agents.tsx), since either form can legitimately occur.
+const AGENT_PHOTO_PATH_RE = /\/storage\/v1\/object\/(public|sign)\/agent-avatars\//;
 
 /**
  * Edit an agent. Only the fields provided are changed. The write goes through the
@@ -229,14 +235,14 @@ export const adminUpdateAgent = createServerFn({ method: "POST" })
           .string()
           .url()
           .max(2000)
-          .refine((url) => url.includes(AGENT_PHOTO_PATH))
+          .refine((url) => AGENT_PHOTO_PATH_RE.test(url))
           .nullable()
           .optional(),
         isActive: z.boolean().optional(),
       })
       .parse(input),
   )
-  .handler(async ({ data, context }) => {
+  .handler(async ({ data }) => {
     const patch: {
       name?: string;
       description?: string;
@@ -251,7 +257,11 @@ export const adminUpdateAgent = createServerFn({ method: "POST" })
     if (data.isActive !== undefined) patch.is_active = data.isActive;
     if (Object.keys(patch).length === 0) throw new Error("NOTHING_TO_UPDATE");
 
-    const { data: updated, error } = await context.supabase
+    // Deactivating an agent makes it invisible under agents_select_authenticated to a
+    // non-CEO/Director caller, so the post-update .select() below must bypass RLS too --
+    // authorization was already verified by requireSuperAdmin, not by this row's policy.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: updated, error } = await supabaseAdmin
       .from("agents")
       .update(patch)
       .eq("code", data.code.toUpperCase())
