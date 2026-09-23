@@ -134,7 +134,6 @@ export function AppSidebar() {
                   </>
                 ) : (
                   agents.map((agent) => {
-                    const href = "/chat/$code";
                     return (
                       <SidebarMenuItem key={agent.code}>
                         <SidebarMenuButton
@@ -143,10 +142,8 @@ export function AppSidebar() {
                           isActive={pathname === `/chat/${agent.code.toLowerCase()}`}
                         >
                           <Link
-                            to={href}
-                            {...(href === "/chat/$code"
-                              ? { params: { code: agent.code.toLowerCase() } }
-                              : {})}
+                            to="/chat/$code"
+                            params={{ code: agent.code.toLowerCase() }}
                             className="flex items-center gap-2"
                           >
                             <AgentAvatar name={agent.name} avatarUrl={agent.avatar_url} size="sm" />
