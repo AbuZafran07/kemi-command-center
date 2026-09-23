@@ -102,11 +102,7 @@ function AgentChatPage() {
           <div>
             <p className="text-lg font-semibold">{t("chat.deniedTitle")}</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {!agent
-                ? t("chat.deniedUnknown")
-                : !allowed
-                  ? t("chat.deniedBody", { agent: agent.name })
-                  : t("chat.notEnabled", { agent: agent.name })}
+              {!agent ? t("chat.deniedUnknown") : t("chat.deniedBody", { agent: agent.name })}
             </p>
           </div>
           <div className="flex gap-2">
