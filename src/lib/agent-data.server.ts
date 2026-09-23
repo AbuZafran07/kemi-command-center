@@ -195,6 +195,30 @@ async function fetchFinanceLive(admin: AdminClient): Promise<AgentDataset> {
   };
 }
 
+/** FINA — budget & expense (Budget Expense app). No demo seed: empty when offline. */
+async function fetchBudgetDataset(): Promise<AgentDataset> {
+  const { fetchExternalDataset } = await import("@/lib/external-sources.server");
+  const [budget, expenses] = await Promise.all([
+    fetchExternalDataset("budget", "budgets"),
+    fetchExternalDataset("budget", "expenses"),
+  ]);
+  const scope = "Anggaran dan realisasi biaya: pos anggaran, nilai, pemakaian, sisa.";
+  if (!budget && !expenses) {
+    // Sumber belum tersedia: kembalikan dataset kosong, jangan mengarang angka.
+    return { sourceCodes: ["BUDGET_LIVE"], dataAsOf: "", records: [], scope };
+  }
+  return {
+    sourceCodes: ["BUDGET_LIVE"],
+    dataAsOf: budget?.dataAsOf || expenses?.dataAsOf || "",
+    records: [
+      { dataset: "budgets", rows: budget?.records ?? [] },
+      { dataset: "expenses", rows: expenses?.records ?? [] },
+    ],
+    scope,
+    isLive: true,
+  };
+}
+
 const FETCHERS: Record<string, (admin: AdminClient) => Promise<AgentDataset>> = {
   JOKO: (admin) =>
     withLiveSource(
@@ -225,6 +249,7 @@ const FETCHERS: Record<string, (admin: AdminClient) => Promise<AgentDataset>> = 
       "Penjualan: invoice, tanggal order, pelanggan, produk, nilai, status.",
     ),
   PIA: fetchFinanceLive,
+  FINA: () => fetchBudgetDataset(),
   PURI: (admin) =>
     withLiveSource(
       "wms",
@@ -252,6 +277,7 @@ const LIVE_SOURCE_LABELS: Record<string, { name: string; system: string }> = {
   SALES_LIVE: { name: "Sales Pulse", system: "Sales" },
   APAR_LIVE: { name: "AP/AR Nexus", system: "Finance" },
   WMS_LIVE: { name: "Warehouse Management Inventory", system: "WMS" },
+  BUDGET_LIVE: { name: "Budget Expense", system: "Finance" },
 };
 
 export async function listSourceDetails(admin: AdminClient, codes: string[]) {
