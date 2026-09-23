@@ -124,9 +124,7 @@ function AgentsPage() {
                     {t("agents.knowledge")}
                   </p>
                   <p className="text-muted-foreground">
-                    {CHAT_ENABLED.includes(selected.code)
-                      ? t("agents.knowledgeDemo")
-                      : t("agents.knowledgeNone")}
+                    {t("agents.knowledgeDemo")}
                   </p>
                 </div>
               </div>
