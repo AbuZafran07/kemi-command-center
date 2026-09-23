@@ -64,6 +64,8 @@ export const Route = createFileRoute("/_authenticated/admin/users")({
 function errorKey(error: Error): string {
   if (error.message.includes("LAST_SUPER_ADMIN")) return "admin.errLastSuperAdmin";
   if (error.message.includes("SUPER_ADMIN_SELF_REVOKE")) return "admin.errSelfRevoke";
+  if (error.message.includes("SELF_DELETE")) return "admin.errSelfDelete";
+  if (error.message.includes("EMAIL_EXISTS")) return "admin.errEmailExists";
   if (error.message.includes("FORBIDDEN")) return "admin.errForbidden";
   return "admin.errGeneric";
 }
