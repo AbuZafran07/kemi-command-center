@@ -147,6 +147,30 @@ function AdminUsersPage() {
     },
   });
 
+  const createMutation = useMutation({
+    mutationFn: () => createUser({ data: newUser }),
+    onSuccess: () => {
+      toast.success(t("admin.userCreated"));
+      setCreating(false);
+      setNewUser({ email: "", password: "", fullName: "", division: "", role: "Staff" });
+      refresh();
+    },
+    onError,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (userId: string) => deleteUser({ data: { userId } }),
+    onSuccess: () => {
+      toast.success(t("admin.userDeleted"));
+      setDeleting(null);
+      refresh();
+    },
+    onError: (error: Error) => {
+      setDeleting(null);
+      onError(error);
+    },
+  });
+
   function openEdit(row: AdminUserRow) {
     setEditing(row);
     setEditName(row.full_name);
