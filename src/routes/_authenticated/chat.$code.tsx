@@ -94,7 +94,7 @@ function AgentChatPage() {
     );
   }
 
-  if (!agent || !allowed || !CHAT_ENABLED.includes(agentCode)) {
+  if (!agent || !allowed) {
     return (
       <Card className="mx-auto max-w-lg">
         <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
