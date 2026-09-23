@@ -15,13 +15,14 @@
  *   data contoh dan TIDAK mengarang angka.
  */
 
-export type ExternalSourceKey = "hris" | "sales" | "apar" | "wms";
+export type ExternalSourceKey = "hris" | "sales" | "apar" | "wms" | "budget";
 
 const DEFAULT_BASE_URLS: Record<ExternalSourceKey, string> = {
   hris: "https://project--f0867238-6dd1-4ca2-aca6-5168a1774a7a.lovable.app",
   sales: "https://project--3394b12c-a321-411c-b192-2d922a75dd2b.lovable.app",
   apar: "https://project--33a78b09-aa11-45a9-b298-7040a810eb4c.lovable.app",
   wms: "https://project--66ed799c-028e-4770-a66b-b52a7ff0cdfc.lovable.app",
+  budget: "https://project--9347cc37-04c7-467c-bf44-7179c0f6af58.lovable.app",
 };
 
 const BASE_URL_ENV: Record<ExternalSourceKey, string> = {
@@ -29,6 +30,7 @@ const BASE_URL_ENV: Record<ExternalSourceKey, string> = {
   sales: "KEMI_SOURCE_SALES_URL",
   apar: "KEMI_SOURCE_APAR_URL",
   wms: "KEMI_SOURCE_WMS_URL",
+  budget: "KEMI_SOURCE_BUDGET_URL",
 };
 
 const TIMEOUT_MS = 10_000;
