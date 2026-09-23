@@ -92,6 +92,15 @@ function AdminUsersPage() {
   const [adminChange, setAdminChange] = useState<{ user: AdminUserRow; enable: boolean } | null>(
     null,
   );
+  const [creating, setCreating] = useState(false);
+  const [newUser, setNewUser] = useState({
+    email: "",
+    password: "",
+    fullName: "",
+    division: "",
+    role: "Staff" as OrgRole,
+  });
+  const [deleting, setDeleting] = useState<AdminUserRow | null>(null);
 
   const refresh = () => {
     void queryClient.invalidateQueries({ queryKey: ["admin-users"] });
