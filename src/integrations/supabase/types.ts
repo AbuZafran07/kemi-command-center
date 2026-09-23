@@ -248,6 +248,7 @@ export type Database = {
       agents: {
         Row: {
           avatar_color: string
+          avatar_url: string | null
           code: string
           created_at: string
           description: string
@@ -260,6 +261,7 @@ export type Database = {
         }
         Insert: {
           avatar_color?: string
+          avatar_url?: string | null
           code: string
           created_at?: string
           description?: string
@@ -272,6 +274,7 @@ export type Database = {
         }
         Update: {
           avatar_color?: string
+          avatar_url?: string | null
           code?: string
           created_at?: string
           description?: string
