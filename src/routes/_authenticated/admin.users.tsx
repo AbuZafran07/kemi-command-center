@@ -181,7 +181,13 @@ function AdminUsersPage() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">{t("admin.sessionNote")}</p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">{t("admin.sessionNote")}</p>
+        <Button variant="brand" size="sm" onClick={() => setCreating(true)}>
+          {t("admin.addUser")}
+        </Button>
+      </div>
+
 
       <Card>
         <CardContent className="p-0">
