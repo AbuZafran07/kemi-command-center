@@ -173,14 +173,67 @@ async function fetchPurchasingDataset(admin: AdminClient): Promise<AgentDataset>
   };
 }
 
+/** PIA live variant — AR/AP/cash come from three datasets in AP/AR Nexus. */
+async function fetchFinanceLive(admin: AdminClient): Promise<AgentDataset> {
+  const { fetchExternalDataset } = await import("@/lib/external-sources.server");
+  const [ar, ap, cash] = await Promise.all([
+    fetchExternalDataset("apar", "receivables"),
+    fetchExternalDataset("apar", "payables"),
+    fetchExternalDataset("apar", "cash_positions"),
+  ]);
+  if (!ar && !ap && !cash) return fetchFinanceDataset(admin);
+  return {
+    sourceCodes: ["APAR_LIVE"],
+    dataAsOf: ar?.dataAsOf || ap?.dataAsOf || cash?.dataAsOf || "",
+    records: [
+      { dataset: "receivables", rows: ar?.records ?? [] },
+      { dataset: "payables", rows: ap?.records ?? [] },
+      { dataset: "cash_positions", rows: cash?.records ?? [] },
+    ],
+    scope: "Piutang, utang, dan posisi kas: nilai, jatuh tempo, status.",
+    isLive: true,
+  };
+}
+
 const FETCHERS: Record<string, (admin: AdminClient) => Promise<AgentDataset>> = {
-  JOKO: fetchHrDataset,
-  ALDI: fetchAttendanceDataset,
-  WAWAN: fetchWarehouseDataset,
-  SALLY: fetchSalesDataset,
-  PIA: fetchFinanceDataset,
-  PURI: fetchPurchasingDataset,
+  JOKO: (admin) =>
+    withLiveSource(
+      "hris",
+      "employees",
+      () => fetchHrDataset(admin),
+      "Data karyawan: divisi, posisi, tanggal masuk, status kepegawaian.",
+    ),
+  ALDI: (admin) =>
+    withLiveSource(
+      "hris",
+      "attendance",
+      () => fetchAttendanceDataset(admin),
+      "Absensi harian: hadir, terlambat (menit), absen, cuti.",
+    ),
+  WAWAN: (admin) =>
+    withLiveSource(
+      "wms",
+      "stock",
+      () => fetchWarehouseDataset(admin),
+      "Stok gudang: SKU, nama produk, gudang, qty on hand, tanggal kedaluwarsa.",
+    ),
+  SALLY: (admin) =>
+    withLiveSource(
+      "sales",
+      "sales",
+      () => fetchSalesDataset(admin),
+      "Penjualan: invoice, tanggal order, pelanggan, produk, nilai, status.",
+    ),
+  PIA: fetchFinanceLive,
+  PURI: (admin) =>
+    withLiveSource(
+      "wms",
+      "purchase_orders",
+      () => fetchPurchasingDataset(admin),
+      "Pembelian: nomor PO, supplier, ETA, nilai, status outstanding.",
+    ),
 };
+
 
 /** Agents that already have a data layer wired up in this phase. */
 export const CHAT_ENABLED_AGENTS = Object.keys(FETCHERS);
