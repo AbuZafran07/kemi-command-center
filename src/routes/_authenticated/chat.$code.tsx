@@ -166,6 +166,14 @@ function AgentChatPage() {
                 {message.role === "user" ? (
                   message.content
                 ) : (
+                  <>
+                  <div className="mb-1.5 flex items-center gap-2">
+                    <AgentAvatar name={agent.name} avatarUrl={agent.avatar_url} size="sm" />
+                    <span className="text-xs font-medium">{agent.name}</span>
+                    <Badge variant="secondary" className="text-[10px]">
+                      {agent.division}
+                    </Badge>
+                  </div>
                   <div className="space-y-2 [&_a]:underline [&_li]:ml-4 [&_li]:list-disc [&_strong]:font-semibold [&_table]:block [&_table]:w-full [&_table]:overflow-x-auto [&_table]:text-xs [&_td]:border [&_td]:border-border [&_td]:px-2 [&_td]:py-1 [&_th]:border [&_th]:border-border [&_th]:px-2 [&_th]:py-1 [&_th]:text-left">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
                   </div>
