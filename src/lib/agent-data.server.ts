@@ -20,6 +20,8 @@ export type AgentDataset = {
   records: Record<string, unknown>[];
   /** Short description of the scope of the dataset. */
   scope: string;
+  /** True when the rows came from the real source app, false for demo seed. */
+  isLive?: boolean;
 };
 
 type AdminClient = Awaited<
@@ -34,6 +36,29 @@ async function getDataAsOf(admin: AdminClient, code: string): Promise<string> {
     .maybeSingle();
   return data?.data_as_of ?? "";
 }
+
+/**
+ * Try the real source app first (Opsi A endpoint), fall back to the demo seed
+ * when the endpoint is not configured or unreachable. Never invent data.
+ */
+async function withLiveSource(
+  source: import("@/lib/external-sources.server").ExternalSourceKey,
+  dataset: string,
+  fallback: () => Promise<AgentDataset>,
+  scope: string,
+): Promise<AgentDataset> {
+  const { fetchExternalDataset } = await import("@/lib/external-sources.server");
+  const live = await fetchExternalDataset(source, dataset);
+  if (!live) return fallback();
+  return {
+    sourceCodes: [`${source.toUpperCase()}_LIVE`],
+    dataAsOf: live.dataAsOf,
+    records: live.records,
+    scope,
+    isLive: true,
+  };
+}
+
 
 /** JOKO — HR generalist: employee master data (demo). */
 async function fetchHrDataset(admin: AdminClient): Promise<AgentDataset> {
@@ -148,14 +173,67 @@ async function fetchPurchasingDataset(admin: AdminClient): Promise<AgentDataset>
   };
 }
 
+/** PIA live variant — AR/AP/cash come from three datasets in AP/AR Nexus. */
+async function fetchFinanceLive(admin: AdminClient): Promise<AgentDataset> {
+  const { fetchExternalDataset } = await import("@/lib/external-sources.server");
+  const [ar, ap, cash] = await Promise.all([
+    fetchExternalDataset("apar", "receivables"),
+    fetchExternalDataset("apar", "payables"),
+    fetchExternalDataset("apar", "cash_positions"),
+  ]);
+  if (!ar && !ap && !cash) return fetchFinanceDataset(admin);
+  return {
+    sourceCodes: ["APAR_LIVE"],
+    dataAsOf: ar?.dataAsOf || ap?.dataAsOf || cash?.dataAsOf || "",
+    records: [
+      { dataset: "receivables", rows: ar?.records ?? [] },
+      { dataset: "payables", rows: ap?.records ?? [] },
+      { dataset: "cash_positions", rows: cash?.records ?? [] },
+    ],
+    scope: "Piutang, utang, dan posisi kas: nilai, jatuh tempo, status.",
+    isLive: true,
+  };
+}
+
 const FETCHERS: Record<string, (admin: AdminClient) => Promise<AgentDataset>> = {
-  JOKO: fetchHrDataset,
-  ALDI: fetchAttendanceDataset,
-  WAWAN: fetchWarehouseDataset,
-  SALLY: fetchSalesDataset,
-  PIA: fetchFinanceDataset,
-  PURI: fetchPurchasingDataset,
+  JOKO: (admin) =>
+    withLiveSource(
+      "hris",
+      "employees",
+      () => fetchHrDataset(admin),
+      "Data karyawan: divisi, posisi, tanggal masuk, status kepegawaian.",
+    ),
+  ALDI: (admin) =>
+    withLiveSource(
+      "hris",
+      "attendance",
+      () => fetchAttendanceDataset(admin),
+      "Absensi harian: hadir, terlambat (menit), absen, cuti.",
+    ),
+  WAWAN: (admin) =>
+    withLiveSource(
+      "wms",
+      "stock",
+      () => fetchWarehouseDataset(admin),
+      "Stok gudang: SKU, nama produk, gudang, qty on hand, tanggal kedaluwarsa.",
+    ),
+  SALLY: (admin) =>
+    withLiveSource(
+      "sales",
+      "sales",
+      () => fetchSalesDataset(admin),
+      "Penjualan: invoice, tanggal order, pelanggan, produk, nilai, status.",
+    ),
+  PIA: fetchFinanceLive,
+  PURI: (admin) =>
+    withLiveSource(
+      "wms",
+      "purchase_orders",
+      () => fetchPurchasingDataset(admin),
+      "Pembelian: nomor PO, supplier, ETA, nilai, status outstanding.",
+    ),
 };
+
 
 /** Agents that already have a data layer wired up in this phase. */
 export const CHAT_ENABLED_AGENTS = Object.keys(FETCHERS);
@@ -169,11 +247,34 @@ export async function loadAgentDataset(
   return fetcher(admin);
 }
 
+const LIVE_SOURCE_LABELS: Record<string, { name: string; system: string }> = {
+  HRIS_LIVE: { name: "HRIS Kemika", system: "HRIS" },
+  SALES_LIVE: { name: "Sales Pulse", system: "Sales" },
+  APAR_LIVE: { name: "AP/AR Nexus", system: "Finance" },
+  WMS_LIVE: { name: "Warehouse Management Inventory", system: "WMS" },
+};
+
 export async function listSourceDetails(admin: AdminClient, codes: string[]) {
   if (codes.length === 0) return [];
+
+  const liveCodes = codes.filter((code) => code in LIVE_SOURCE_LABELS);
+  const registryCodes = codes.filter((code) => !(code in LIVE_SOURCE_LABELS));
+
+  const live = liveCodes.map((code) => ({
+    code,
+    name: LIVE_SOURCE_LABELS[code]!.name,
+    system: LIVE_SOURCE_LABELS[code]!.system,
+    classification: "CONFIDENTIAL",
+    data_as_of: "",
+    is_demo: false,
+  }));
+
+  if (registryCodes.length === 0) return live;
+
   const { data } = await admin
     .from("data_sources")
     .select("code, name, system, classification, data_as_of, is_demo")
-    .in("code", codes);
-  return data ?? [];
+    .in("code", registryCodes);
+  return [...live, ...(data ?? [])];
+
 }
