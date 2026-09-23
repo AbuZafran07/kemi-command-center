@@ -247,11 +247,34 @@ export async function loadAgentDataset(
   return fetcher(admin);
 }
 
+const LIVE_SOURCE_LABELS: Record<string, { name: string; system: string }> = {
+  HRIS_LIVE: { name: "HRIS Kemika", system: "HRIS" },
+  SALES_LIVE: { name: "Sales Pulse", system: "Sales" },
+  APAR_LIVE: { name: "AP/AR Nexus", system: "Finance" },
+  WMS_LIVE: { name: "Warehouse Management Inventory", system: "WMS" },
+};
+
 export async function listSourceDetails(admin: AdminClient, codes: string[]) {
   if (codes.length === 0) return [];
+
+  const liveCodes = codes.filter((code) => code in LIVE_SOURCE_LABELS);
+  const registryCodes = codes.filter((code) => !(code in LIVE_SOURCE_LABELS));
+
+  const live = liveCodes.map((code) => ({
+    code,
+    name: LIVE_SOURCE_LABELS[code]!.name,
+    system: LIVE_SOURCE_LABELS[code]!.system,
+    classification: "CONFIDENTIAL",
+    data_as_of: "",
+    is_demo: false,
+  }));
+
+  if (registryCodes.length === 0) return live;
+
   const { data } = await admin
     .from("data_sources")
     .select("code, name, system, classification, data_as_of, is_demo")
-    .in("code", codes);
-  return data ?? [];
+    .in("code", registryCodes);
+  return [...live, ...(data ?? [])];
+
 }
