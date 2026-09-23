@@ -1,6 +1,11 @@
-import { LogOut, Moon, Sun } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { Bell, LogOut, Moon, Search, Sun, User } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { CommandPalette, useCommandPaletteShortcut } from "@/components/layout/CommandPalette";
 import { InstallButton } from "@/components/layout/InstallButton";
 import { UserAvatar } from "@/components/profile/UserAvatar";
 import { useAuth, usePreferences } from "@/components/providers/AppProviders";
@@ -14,7 +19,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import logo from "@/assets/kemi-logo.png.asset.json";
+import { listPendingActionApprovals } from "@/lib/actions.functions";
+import { listPendingApprovals } from "@/lib/access.functions";
 import type { SupportedLanguage } from "@/i18n";
 
 const languages: { code: SupportedLanguage; label: string }[] = [
@@ -22,25 +28,61 @@ const languages: { code: SupportedLanguage; label: string }[] = [
   { code: "en", label: "EN" },
 ];
 
+const APPROVER_ROLES = ["CEO", "Director", "Manager"];
+
 export function TopBar() {
   const { t } = useTranslation();
   const { theme, toggleTheme, language, setLanguage } = usePreferences();
   const { user, profile, role, signOut } = useAuth();
   const displayName = profile?.full_name || user?.email || t("header.guest");
+  const isApprover = Boolean(role && APPROVER_ROLES.includes(role));
+
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  useCommandPaletteShortcut(setPaletteOpen);
+
+  const fetchAccessApprovals = useServerFn(listPendingApprovals);
+  const fetchActionApprovals = useServerFn(listPendingActionApprovals);
+  const accessQuery = useQuery({
+    queryKey: ["pending-approvals"],
+    queryFn: () => fetchAccessApprovals(),
+    enabled: isApprover,
+  });
+  const actionQuery = useQuery({
+    queryKey: ["pending-action-approvals"],
+    queryFn: () => fetchActionApprovals(),
+    enabled: isApprover,
+  });
+  const pendingCount = (accessQuery.data?.length ?? 0) + (actionQuery.data?.length ?? 0);
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-card/80 px-3 backdrop-blur supports-[backdrop-filter]:bg-card/60 sm:px-5">
+    <header className="glass sticky top-0 z-30 flex h-16 items-center gap-3 border-b px-3 sm:px-5">
       <SidebarTrigger className="shrink-0" />
 
-      <div className="flex min-w-0 items-center gap-3">
-        <img src={logo.url} alt={t("app.name")} className="h-9 w-9 rounded-lg" />
-        <div className="min-w-0 leading-tight">
-          <p className="truncate text-sm font-semibold tracking-tight">{t("app.fullName")}</p>
-          <p className="truncate text-xs text-brand">{t("app.tagline")}</p>
-        </div>
-      </div>
+      <button
+        type="button"
+        onClick={() => setPaletteOpen(true)}
+        className="hidden min-w-0 max-w-sm flex-1 items-center gap-2 rounded-lg border border-input bg-background/60 px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-brand/40 hover:text-foreground sm:flex"
+      >
+        <Search className="h-4 w-4 shrink-0" />
+        <span className="truncate">{t("search.placeholder")}</span>
+        <kbd className="ml-auto hidden shrink-0 items-center gap-0.5 rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground md:flex">
+          ⌘K
+        </kbd>
+      </button>
+      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
 
       <div className="ml-auto flex items-center gap-1.5">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="sm:hidden"
+          onClick={() => setPaletteOpen(true)}
+          aria-label={t("search.placeholder")}
+        >
+          <Search className="h-4 w-4" />
+        </Button>
+
         <InstallButton />
 
         <div
@@ -74,21 +116,31 @@ export function TopBar() {
           {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </Button>
 
-        <div className="hidden text-right leading-tight sm:block">
-          <p className="text-sm font-medium">{displayName}</p>
-          {role ? <p className="text-xs text-muted-foreground">{role}</p> : null}
-        </div>
+        {isApprover ? (
+          <Button variant="ghost" size="icon" className="relative" asChild>
+            <Link to="/approvals" aria-label={t("header.notifications")}>
+              <Bell className="h-4 w-4" />
+              {pendingCount > 0 ? (
+                <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive ring-2 ring-background" />
+              ) : null}
+            </Link>
+          </Button>
+        ) : null}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full p-0"
-              aria-label={t("header.account")}
+            <button
+              type="button"
+              className="flex items-center gap-2 rounded-full border border-transparent py-0.5 pl-0.5 pr-2.5 transition-colors hover:border-border hover:bg-accent"
             >
               <UserAvatar name={displayName} avatarUrl={profile?.avatar_url} size="sm" />
-            </Button>
+              <span className="hidden text-left leading-tight sm:block">
+                <span className="block text-sm font-medium">{displayName}</span>
+                {role ? (
+                  <span className="block text-[11px] text-muted-foreground">{role}</span>
+                ) : null}
+              </span>
+            </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>
@@ -98,6 +150,12 @@ export function TopBar() {
               </span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/settings">
+                <User className="mr-2 h-4 w-4" />
+                {t("header.profile")}
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => void signOut()}>
               <LogOut className="mr-2 h-4 w-4" />
               {t("header.signOut")}

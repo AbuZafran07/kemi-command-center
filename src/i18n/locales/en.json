@@ -30,7 +30,8 @@
     "profile": "Profile",
     "signIn": "Sign in",
     "signOut": "Sign out",
-    "guest": "Guest"
+    "guest": "Guest",
+    "notifications": "Notifications"
   },
   "auth": {
     "title": "Sign in to KEMI",
@@ -72,7 +73,16 @@
     "cardTasks": "Running tasks",
     "cardDocs": "Indexed documents",
     "cardAudit": "Audit records",
-    "placeholder": "Data will be available in the next phase."
+    "placeholder": "Data will be available in the next phase.",
+    "greetingMorning": "Good morning, {{name}}",
+    "greetingAfternoon": "Good afternoon, {{name}}",
+    "greetingEvening": "Good evening, {{name}}",
+    "greetingNight": "Good evening, {{name}}",
+    "kpiUnavailable": "Data not available yet.",
+    "arcaTitle": "ARCA Briefing",
+    "tagFact": "Fact",
+    "tagAnalysis": "Analysis",
+    "digitalTeam": "Digital Team"
   },
   "agents": {
     "title": "Agent Center",
@@ -356,5 +366,10 @@
     "photoTooLarge": "Photo must be 2MB or smaller.",
     "agentSaved": "Agent updated.",
     "agentToggled": "Agent status updated."
+  },
+  "search": {
+    "placeholder": "Search pages...",
+    "empty": "No results found.",
+    "pages": "Pages"
   }
 }

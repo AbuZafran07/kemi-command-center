@@ -18,6 +18,8 @@ import { listMyAccessRequests } from "@/lib/access.functions";
 import { listAllAgents } from "@/lib/agents.functions";
 import { useState } from "react";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 export const Route = createFileRoute("/_authenticated/requests")({
   head: () => ({
     meta: [
@@ -95,7 +97,10 @@ function RequestsPage() {
         </CardHeader>
         <CardContent className="space-y-3">
           {requestsQuery.isLoading ? (
-            <p className="text-sm text-muted-foreground">{t("common.loading")}</p>
+            <div className="space-y-3">
+              <Skeleton className="h-16 rounded-xl" />
+              <Skeleton className="h-16 rounded-xl" />
+            </div>
           ) : requests.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t("access.myEmpty")}</p>
           ) : (

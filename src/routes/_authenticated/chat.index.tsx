@@ -46,7 +46,6 @@ function ChatIndexPage() {
                 <CardContent className="flex items-center gap-3 py-4">
                   <AgentAvatar
                     name={agent.name}
-                    color={agent.avatar_color}
                     avatarUrl={agent.avatar_url}
                   />
                   <div className="min-w-0">

@@ -17,6 +17,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Skeleton } from "@/components/ui/skeleton";
 import { listMyAgents, type AgentCard } from "@/lib/agents.functions";
 
 export const Route = createFileRoute("/_authenticated/agents")({
@@ -49,7 +50,11 @@ function AgentsPage() {
       <PageHeader title={t("agents.title")} subtitle={t("agents.subtitle")} />
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">{t("common.loading")}</p>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <Skeleton key={index} className="h-40 rounded-2xl" />
+          ))}
+        </div>
       ) : agents.length === 0 ? (
         <Card>
           <CardContent className="py-10 text-center text-sm text-muted-foreground">
@@ -59,13 +64,9 @@ function AgentsPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {agents.map((agent) => (
-            <Card key={agent.code} className="flex flex-col">
+            <Card key={agent.code} className="hover-glow flex flex-col">
               <CardHeader className="flex flex-row items-start gap-3 pb-3">
-                <AgentAvatar
-                  name={agent.name}
-                  color={agent.avatar_color}
-                  avatarUrl={agent.avatar_url}
-                />
+                <AgentAvatar name={agent.name} avatarUrl={agent.avatar_url} />
                 <div className="min-w-0">
                   <p className="truncate font-semibold">{agent.name}</p>
                   <p className="truncate text-xs text-muted-foreground">{agent.role}</p>
@@ -105,12 +106,7 @@ function AgentsPage() {
             <>
               <SheetHeader>
                 <div className="flex items-center gap-3">
-                  <AgentAvatar
-                    name={selected.name}
-                    color={selected.avatar_color}
-                    avatarUrl={selected.avatar_url}
-                    size="lg"
-                  />
+                  <AgentAvatar name={selected.name} avatarUrl={selected.avatar_url} size="lg" />
                   <div>
                     <SheetTitle>{selected.name}</SheetTitle>
                     <SheetDescription>{selected.role}</SheetDescription>

@@ -13,6 +13,7 @@ import { RequestAccessDialog } from "@/components/agents/RequestAccessDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import {
   getAgentConversation,
@@ -86,7 +87,12 @@ function AgentChatPage() {
   }, [messages.length, mutation.isPending]);
 
   if (detailQuery.isLoading) {
-    return <p className="text-sm text-muted-foreground">{t("common.loading")}</p>;
+    return (
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <Skeleton className="h-[70vh] rounded-2xl" />
+        <Skeleton className="h-64 rounded-2xl" />
+      </div>
+    );
   }
 
   if (!agent || !allowed || !CHAT_ENABLED.includes(agentCode)) {
@@ -133,9 +139,9 @@ function AgentChatPage() {
 
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
-      <div className="flex min-h-[70vh] flex-col rounded-xl border border-border bg-card">
+      <div className="flex min-h-[70vh] flex-col rounded-2xl border border-border bg-card shadow-soft">
         <div className="flex items-center gap-3 border-b border-border px-4 py-3">
-          <AgentAvatar name={agent.name} color={agent.avatar_color} avatarUrl={agent.avatar_url} />
+          <AgentAvatar name={agent.name} avatarUrl={agent.avatar_url} />
           <div className="min-w-0">
             <p className="truncate font-semibold">{agent.name}</p>
             <p className="truncate text-xs text-muted-foreground">
@@ -156,10 +162,10 @@ function AgentChatPage() {
               className={message.role === "user" ? "flex justify-end" : "flex justify-start"}
             >
               <div
-                className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${
+                className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm shadow-soft ${
                   message.role === "user"
-                    ? "whitespace-pre-wrap bg-brand text-brand-foreground"
-                    : "bg-muted text-foreground"
+                    ? "whitespace-pre-wrap bg-gradient-brand text-brand-foreground"
+                    : "glass border text-foreground"
                 }`}
               >
                 {message.role === "user" ? (
@@ -204,7 +210,7 @@ function AgentChatPage() {
         </div>
       </div>
 
-      <Card className="h-fit">
+      <Card className="h-fit shadow-soft">
         <CardHeader className="pb-3">
           <CardTitle className="text-base">{t("chat.sourcesTitle")}</CardTitle>
         </CardHeader>
@@ -234,8 +240,12 @@ function AgentChatPage() {
           </div>
 
           <div className="rounded-lg bg-muted p-3 text-xs text-muted-foreground">
-            <p className="font-medium text-foreground">{t("chat.factVsAnalysis")}</p>
-            <p className="mt-1">{t("chat.factVsAnalysisDesc")}</p>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <Badge className="bg-brand text-brand-foreground">{t("dashboard.tagFact")}</Badge>
+              <Badge variant="secondary">{t("dashboard.tagAnalysis")}</Badge>
+              <span className="font-medium text-foreground">{t("chat.factVsAnalysis")}</span>
+            </div>
+            <p className="mt-1.5">{t("chat.factVsAnalysisDesc")}</p>
           </div>
         </CardContent>
       </Card>

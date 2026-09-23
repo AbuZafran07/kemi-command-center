@@ -184,8 +184,8 @@ function AdminAgentsPage() {
                 >
                   <AgentAvatar
                     name={agent.name}
-                    color={agent.avatar_color}
                     avatarUrl={agent.avatar_url}
+                    status={agent.is_active ? "online" : "offline"}
                   />
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">

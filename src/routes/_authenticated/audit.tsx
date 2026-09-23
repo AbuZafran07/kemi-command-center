@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -134,7 +135,11 @@ function AuditPage() {
       <Card>
         <CardContent className="p-0">
           {auditQuery.isLoading ? (
-            <p className="p-4 text-sm text-muted-foreground">{t("common.loading")}</p>
+            <div className="space-y-2 p-4">
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
+            </div>
           ) : rows.length === 0 ? (
             <p className="p-4 text-sm text-muted-foreground">{t("audit.empty")}</p>
           ) : (

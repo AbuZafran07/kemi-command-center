@@ -30,7 +30,8 @@
     "profile": "Profil",
     "signIn": "Masuk",
     "signOut": "Keluar",
-    "guest": "Tamu"
+    "guest": "Tamu",
+    "notifications": "Notifikasi"
   },
   "auth": {
     "title": "Masuk ke KEMI",
@@ -72,7 +73,16 @@
     "cardTasks": "Tugas berjalan",
     "cardDocs": "Dokumen terindeks",
     "cardAudit": "Catatan audit",
-    "placeholder": "Data akan tersedia pada fase berikutnya."
+    "placeholder": "Data akan tersedia pada fase berikutnya.",
+    "greetingMorning": "Selamat pagi, {{name}}",
+    "greetingAfternoon": "Selamat siang, {{name}}",
+    "greetingEvening": "Selamat sore, {{name}}",
+    "greetingNight": "Selamat malam, {{name}}",
+    "kpiUnavailable": "Data belum tersedia.",
+    "arcaTitle": "Briefing ARCA",
+    "tagFact": "Fakta",
+    "tagAnalysis": "Analisis",
+    "digitalTeam": "Tim Digital"
   },
   "agents": {
     "title": "Pusat Agen",
@@ -356,5 +366,10 @@
     "photoTooLarge": "Ukuran foto maksimal 2MB.",
     "agentSaved": "Agent diperbarui.",
     "agentToggled": "Status agent diperbarui."
+  },
+  "search": {
+    "placeholder": "Cari halaman...",
+    "empty": "Tidak ditemukan.",
+    "pages": "Halaman"
   }
 }

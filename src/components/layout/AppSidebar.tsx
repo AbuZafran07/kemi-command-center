@@ -10,11 +10,12 @@ import {
   ScrollText,
   Settings,
   ShieldCheck,
-  UserCog,
   Sparkles,
+  UserCog,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import logo from "@/assets/kemi-logo.png.asset.json";
 import { AgentAvatar } from "@/components/agents/AgentAvatar";
 import { useAuth } from "@/components/providers/AppProviders";
 import {
@@ -23,9 +24,11 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import { listMyAgents } from "@/lib/agents.functions";
 
@@ -44,13 +47,17 @@ const BRIEFING_ROLES = ["CEO", "Director"];
 
 const CHAT_ENABLED = ["ARCA", "JOKO", "WAWAN", "ALDI", "SALLY", "PIA", "PURI"];
 
+// The active accent bar/tint layers on top of the shadcn sidebar defaults.
+const ACTIVE_ACCENT =
+  "rounded-l-sm border-l-2 border-transparent pl-[calc(0.5rem-2px)] transition-colors data-[active=true]:border-brand data-[active=true]:bg-brand-soft";
+
 export function AppSidebar() {
   const { t } = useTranslation();
   const { user, role, isSuperAdmin } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const fetchAgents = useServerFn(listMyAgents);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["my-agents"],
     queryFn: () => fetchAgents(),
     enabled: Boolean(user),
@@ -73,7 +80,20 @@ export function AppSidebar() {
   ];
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-r border-glass-border">
+      <SidebarHeader className="px-3 py-3">
+        <Link to="/" className="flex items-center gap-2.5 rounded-lg px-1 py-1">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-brand text-sm font-display font-bold text-brand-foreground shadow-soft">
+            <img src={logo.url} alt="" className="h-6 w-6 rounded object-cover" />
+          </span>
+          <span className="min-w-0 leading-tight group-data-[collapsible=icon]:hidden">
+            <span className="block truncate font-display text-sm font-semibold tracking-tight">
+              {t("app.name")}
+            </span>
+            <span className="block truncate text-[11px] text-brand">{t("app.tagline")}</span>
+          </span>
+        </Link>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>{t("nav.sectionMain")}</SidebarGroupLabel>
@@ -83,6 +103,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton
                     asChild
+                    className={ACTIVE_ACCENT}
                     isActive={
                       item.key === "admin" ? pathname.startsWith("/admin") : pathname === item.url
                     }
@@ -98,38 +119,45 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {agents.length > 0 ? (
+        {isLoading || agents.length > 0 ? (
           <SidebarGroup>
             <SidebarGroupLabel>{t("nav.sectionAgents")}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {agents.map((agent) => {
-                  const href = CHAT_ENABLED.includes(agent.code) ? "/chat/$code" : "/agents";
-                  return (
-                    <SidebarMenuItem key={agent.code}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={pathname === `/chat/${agent.code.toLowerCase()}`}
-                      >
-                        <Link
-                          to={href}
-                          {...(href === "/chat/$code"
-                            ? { params: { code: agent.code.toLowerCase() } }
-                            : {})}
-                          className="flex items-center gap-2"
-                        >
-                          <AgentAvatar
-                            name={agent.name}
-                            color={agent.avatar_color}
-                            avatarUrl={agent.avatar_url}
-                            size="sm"
-                          />
-                          <span className="truncate">{agent.name}</span>
-                        </Link>
-                      </SidebarMenuButton>
+                {isLoading ? (
+                  <>
+                    <SidebarMenuItem>
+                      <SidebarMenuSkeleton showIcon />
                     </SidebarMenuItem>
-                  );
-                })}
+                    <SidebarMenuItem>
+                      <SidebarMenuSkeleton showIcon />
+                    </SidebarMenuItem>
+                  </>
+                ) : (
+                  agents.map((agent) => {
+                    const href = CHAT_ENABLED.includes(agent.code) ? "/chat/$code" : "/agents";
+                    return (
+                      <SidebarMenuItem key={agent.code}>
+                        <SidebarMenuButton
+                          asChild
+                          className={ACTIVE_ACCENT}
+                          isActive={pathname === `/chat/${agent.code.toLowerCase()}`}
+                        >
+                          <Link
+                            to={href}
+                            {...(href === "/chat/$code"
+                              ? { params: { code: agent.code.toLowerCase() } }
+                              : {})}
+                            className="flex items-center gap-2"
+                          >
+                            <AgentAvatar name={agent.name} avatarUrl={agent.avatar_url} size="sm" />
+                            <span className="truncate">{agent.name}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })
+                )}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

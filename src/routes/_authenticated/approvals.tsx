@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { decideAccessRequest, listPendingApprovals } from "@/lib/access.functions";
 
@@ -67,7 +68,10 @@ function ApprovalsPage() {
       </div>
 
       {pendingQuery.isLoading ? (
-        <p className="text-sm text-muted-foreground">{t("common.loading")}</p>
+        <div className="space-y-3">
+          <Skeleton className="h-32 rounded-2xl" />
+          <Skeleton className="h-32 rounded-2xl" />
+        </div>
       ) : requests.length === 0 ? (
         <Card>
           <CardContent className="py-10 text-center text-sm text-muted-foreground">
