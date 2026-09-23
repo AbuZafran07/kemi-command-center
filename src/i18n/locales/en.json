@@ -365,7 +365,17 @@
     "photoInvalidType": "Unsupported photo format. Use JPG, PNG, or WEBP.",
     "photoTooLarge": "Photo must be 2MB or smaller.",
     "agentSaved": "Agent updated.",
-    "agentToggled": "Agent status updated."
+    "agentToggled": "Agent status updated.",
+    "addUser": "Add user",
+    "addUserDesc": "Create a new account with its division and organisational role.",
+    "passwordHint": "Password must be at least 8 characters. Share it with the user securely.",
+    "userCreated": "New account created.",
+    "delete": "Delete",
+    "deleteTitle": "Delete user?",
+    "deleteDesc": "{{name}}'s account will be permanently deleted along with their profile and roles. This cannot be undone.",
+    "userDeleted": "User deleted.",
+    "errSelfDelete": "You cannot delete your own account.",
+    "errEmailExists": "That email is already registered."
   },
   "search": {
     "placeholder": "Search pages...",

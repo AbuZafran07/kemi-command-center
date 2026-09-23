@@ -365,7 +365,17 @@
     "photoInvalidType": "Format foto tidak didukung. Gunakan JPG, PNG, atau WEBP.",
     "photoTooLarge": "Ukuran foto maksimal 2MB.",
     "agentSaved": "Agent diperbarui.",
-    "agentToggled": "Status agent diperbarui."
+    "agentToggled": "Status agent diperbarui.",
+    "addUser": "Tambah pengguna",
+    "addUserDesc": "Buat akun baru beserta divisi dan role organisasinya.",
+    "passwordHint": "Kata sandi minimal 8 karakter. Sampaikan ke pengguna secara aman.",
+    "userCreated": "Akun baru berhasil dibuat.",
+    "delete": "Hapus",
+    "deleteTitle": "Hapus pengguna?",
+    "deleteDesc": "Akun {{name}} akan dihapus permanen beserta profil dan role-nya. Tindakan ini tidak bisa dibatalkan.",
+    "userDeleted": "Pengguna dihapus.",
+    "errSelfDelete": "Anda tidak dapat menghapus akun Anda sendiri.",
+    "errEmailExists": "Email tersebut sudah terdaftar."
   },
   "search": {
     "placeholder": "Cari halaman...",

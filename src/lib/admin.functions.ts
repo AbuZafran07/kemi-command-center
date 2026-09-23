@@ -182,6 +182,93 @@ export const adminToggleSuperAdmin = createServerFn({ method: "POST" })
     return { ok: true } as const;
   });
 
+/** Create a new account with profile + organisational role. */
+export const adminCreateUser = createServerFn({ method: "POST" })
+  .middleware([requireSuperAdmin])
+  .inputValidator((input: unknown) =>
+    z
+      .object({
+        email: z.string().trim().email().max(200),
+        password: z.string().min(8).max(200),
+        fullName: z.string().trim().min(1).max(200),
+        division: z.string().trim().max(100).default(""),
+        role: orgRoleSchema,
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
+      email: data.email,
+      password: data.password,
+      email_confirm: true,
+      user_metadata: {
+        full_name: data.fullName,
+        division: data.division,
+        role: data.role,
+      },
+    });
+    if (error) {
+      if (/already/i.test(error.message)) throw new Error("EMAIL_EXISTS");
+      throw new Error(error.message);
+    }
+    const newId = created.user?.id;
+    if (!newId) throw new Error("CREATE_FAILED");
+
+    // The signup trigger creates the profile/role rows; align them with the form.
+    await supabaseAdmin
+      .from("profiles")
+      .upsert({ id: newId, full_name: data.fullName, division: data.division });
+    const { data: existingRoles } = await supabaseAdmin
+      .from("user_roles")
+      .select("id, role")
+      .eq("user_id", newId)
+      .neq("role", "super_admin");
+    if (!existingRoles || existingRoles.length === 0) {
+      await supabaseAdmin.from("user_roles").insert({ user_id: newId, role: data.role });
+    } else {
+      await supabaseAdmin.from("user_roles").update({ role: data.role }).eq("id", existingRoles[0]!.id);
+      for (const extra of existingRoles.slice(1)) {
+        await supabaseAdmin.from("user_roles").delete().eq("id", extra.id);
+      }
+    }
+
+    await supabaseAdmin.from("audit_log").insert({
+      user_id: context.userId,
+      agent_code: null,
+      action: "admin_user_created",
+      detail: { target_user: newId, email: data.email, role: data.role },
+      data_scope: "admin",
+    });
+
+    return { ok: true } as const;
+  });
+
+/** Permanently delete an account (never your own). */
+export const adminDeleteUser = createServerFn({ method: "POST" })
+  .middleware([requireSuperAdmin])
+  .inputValidator((input: unknown) => z.object({ userId: z.string().uuid() }).parse(input))
+  .handler(async ({ data, context }) => {
+    if (data.userId === context.userId) throw new Error("SELF_DELETE");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: target } = await supabaseAdmin.auth.admin.getUserById(data.userId);
+    const email = target.user?.email ?? "";
+
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(data.userId);
+    if (error) throw new Error(error.message);
+
+    await supabaseAdmin.from("audit_log").insert({
+      user_id: context.userId,
+      agent_code: null,
+      action: "admin_user_deleted",
+      detail: { target_user: data.userId, email },
+      data_scope: "admin",
+    });
+
+    return { ok: true } as const;
+  });
+
 export type AdminAgentRow = {
   code: string;
   name: string;
