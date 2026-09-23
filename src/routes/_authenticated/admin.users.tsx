@@ -266,9 +266,21 @@ function AdminUsersPage() {
                           />
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button variant="outline" size="sm" onClick={() => openEdit(row)}>
-                            {t("admin.edit")}
-                          </Button>
+                          <div className="flex justify-end gap-2">
+                            <Button variant="outline" size="sm" onClick={() => openEdit(row)}>
+                              {t("admin.edit")}
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-destructive"
+                              disabled={isMe}
+                              title={isMe ? t("admin.errSelfDelete") : ""}
+                              onClick={() => setDeleting(row)}
+                            >
+                              {t("admin.delete")}
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     );
